@@ -9,6 +9,7 @@ import (
 	"time"
 
 	cloudevents "github.com/cloudevents/sdk-go"
+	"github.com/gofrs/uuid"
 	"github.com/jinzhu/gorm"
 	"github.com/novacloudcz/graphql-orm-changelog/gen"
 	"github.com/novacloudcz/graphql-orm/events"
@@ -21,8 +22,7 @@ func New(db *gen.DB, ec *events.EventController) *Resolver {
 }
 
 func CloudEventsReceive(db *gen.DB) func(event cloudevents.Event) error {
-	// do something with event.Context and event.Data (via event.DataAs(foo)
-	// fmt.Println("new event")
+
 	return func(event cloudevents.Event) (err error) {
 		log.Println("new event")
 		ormEvent := &events.Event{}
@@ -46,6 +46,7 @@ func CloudEventsReceive(db *gen.DB) func(event cloudevents.Event) error {
 
 func storeEvent(tx *gorm.DB, event *events.Event) error {
 	log := &gen.Changelog{
+		ID:          event.ID,
 		Entity:      event.Entity,
 		EntityID:    event.EntityID,
 		Date:        time.Now(),
@@ -53,20 +54,28 @@ func storeEvent(tx *gorm.DB, event *events.Event) error {
 		PrincipalID: event.PrincipalID,
 	}
 
+	if err := tx.Create(log).Error; err != nil {
+		return err
+	}
+
 	changes := []*gen.ChangelogChange{}
 	for _, ch := range event.Changes {
 		oldValue := fmt.Sprintf("%v", ch.OldValue)
 		newValue := fmt.Sprintf("%v", ch.NewValue)
-		changes = append(changes, &gen.ChangelogChange{
+		change := &gen.ChangelogChange{
+			ID:       uuid.Must(uuid.NewV4()).String(),
 			Column:   ch.Name,
 			OldValue: &oldValue,
 			NewValue: &newValue,
-			Log:      log,
-		})
+		}
+		if err := tx.Create(change).Error; err != nil {
+			return err
+		}
+		changes = append(changes, change)
 	}
 	log.Changes = changes
 
-	if err := tx.Set("gorm:association_autocreate", true).Set("gorm:association_autoupdate", true).Create(log).Error; err != nil {
+	if err := tx.Model(log).Association("changes").Replace(changes).Error; err != nil {
 		return err
 	}
 
