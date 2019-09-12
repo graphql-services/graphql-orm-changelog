@@ -173,7 +173,7 @@ func DeleteChangelogChangeHandler(ctx context.Context, r *GeneratedResolver, id 
 		PrincipalID: principalID,
 	})
 
-	err = tx.Delete(item, "changelog_changes.id = ?", id).Error
+	err = tx.Delete(item, TableName("changelog_changes")+".id = ?", id).Error
 	if err != nil {
 		tx.Rollback()
 		return
@@ -383,7 +383,7 @@ func DeleteChangelogHandler(ctx context.Context, r *GeneratedResolver, id string
 		PrincipalID: principalID,
 	})
 
-	err = tx.Delete(item, "changelogs.id = ?", id).Error
+	err = tx.Delete(item, TableName("changelogs")+".id = ?", id).Error
 	if err != nil {
 		tx.Rollback()
 		return

@@ -32,7 +32,7 @@ func (qf *ChangelogChangeQueryFilter) Apply(ctx context.Context, dialect gorm.Di
 	queryParts := strings.Split(*qf.Query, " ")
 	for _, part := range queryParts {
 		ors := []string{}
-		if err := qf.applyQueryWithFields(dialect, fields, part, "changelog_changes", &ors, values, joins); err != nil {
+		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("changelog_changes"), &ors, values, joins); err != nil {
 			return err
 		}
 		*wheres = append(*wheres, "("+strings.Join(ors, " OR ")+")")
@@ -110,7 +110,7 @@ func (qf *ChangelogQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect,
 	queryParts := strings.Split(*qf.Query, " ")
 	for _, part := range queryParts {
 		ors := []string{}
-		if err := qf.applyQueryWithFields(dialect, fields, part, "changelogs", &ors, values, joins); err != nil {
+		if err := qf.applyQueryWithFields(dialect, fields, part, TableName("changelogs"), &ors, values, joins); err != nil {
 			return err
 		}
 		*wheres = append(*wheres, "("+strings.Join(ors, " OR ")+")")

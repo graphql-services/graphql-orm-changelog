@@ -39,11 +39,11 @@ func QueryChangelogChangeHandler(ctx context.Context, r *GeneratedResolver, opts
 	}
 	qb := r.DB.Query()
 	if opts.ID != nil {
-		qb = qb.Where("changelog_changes.id = ?", *opts.ID)
+		qb = qb.Where(TableName("changelog_changes")+".id = ?", *opts.ID)
 	}
 
 	var items []*ChangelogChange
-	err := rt.GetItems(ctx, qb, "changelog_changes", &items)
+	err := rt.GetItems(ctx, qb, TableName("changelog_changes"), &items)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func QueryChangelogChangesHandler(ctx context.Context, r *GeneratedResolver, opt
 type GeneratedChangelogChangeResultTypeResolver struct{ *GeneratedResolver }
 
 func (r *GeneratedChangelogChangeResultTypeResolver) Items(ctx context.Context, obj *ChangelogChangeResultType) (items []*ChangelogChange, err error) {
-	err = obj.GetItems(ctx, r.DB.db, "changelog_changes", &items)
+	err = obj.GetItems(ctx, r.DB.db, TableName("changelog_changes"), &items)
 	return
 }
 
@@ -154,11 +154,11 @@ func QueryChangelogHandler(ctx context.Context, r *GeneratedResolver, opts Query
 	}
 	qb := r.DB.Query()
 	if opts.ID != nil {
-		qb = qb.Where("changelogs.id = ?", *opts.ID)
+		qb = qb.Where(TableName("changelogs")+".id = ?", *opts.ID)
 	}
 
 	var items []*Changelog
-	err := rt.GetItems(ctx, qb, "changelogs", &items)
+	err := rt.GetItems(ctx, qb, TableName("changelogs"), &items)
 	if err != nil {
 		return nil, err
 	}
@@ -215,7 +215,7 @@ func QueryChangelogsHandler(ctx context.Context, r *GeneratedResolver, opts Quer
 type GeneratedChangelogResultTypeResolver struct{ *GeneratedResolver }
 
 func (r *GeneratedChangelogResultTypeResolver) Items(ctx context.Context, obj *ChangelogResultType) (items []*Changelog, err error) {
-	err = obj.GetItems(ctx, r.DB.db, "changelogs", &items)
+	err = obj.GetItems(ctx, r.DB.db, TableName("changelogs"), &items)
 	return
 }
 
@@ -241,7 +241,7 @@ func (r *GeneratedChangelogResolver) ChangesIds(ctx context.Context, obj *Change
 	ids = []string{}
 
 	items := []*ChangelogChange{}
-	err = r.DB.Query().Model(obj).Select("changelog_changes.id").Related(&items, "Changes").Error
+	err = r.DB.Query().Model(obj).Select(TableName("changelog_changes")+".id").Related(&items, "Changes").Error
 
 	for _, item := range items {
 		ids = append(ids, item.ID)

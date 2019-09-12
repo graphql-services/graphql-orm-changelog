@@ -19,7 +19,7 @@ func (f *ChangelogChangeFilterType) IsEmpty(ctx context.Context, dialect gorm.Di
 	return len(wheres) == 0
 }
 func (f *ChangelogChangeFilterType) Apply(ctx context.Context, dialect gorm.Dialect, wheres *[]string, values *[]interface{}, joins *[]string) error {
-	return f.ApplyWithAlias(ctx, dialect, "changelog_changes", wheres, values, joins)
+	return f.ApplyWithAlias(ctx, dialect, TableName("changelog_changes"), wheres, values, joins)
 }
 func (f *ChangelogChangeFilterType) ApplyWithAlias(ctx context.Context, dialect gorm.Dialect, alias string, wheres *[]string, values *[]interface{}, joins *[]string) error {
 	if f == nil {
@@ -423,7 +423,7 @@ func (f *ChangelogFilterType) IsEmpty(ctx context.Context, dialect gorm.Dialect)
 	return len(wheres) == 0
 }
 func (f *ChangelogFilterType) Apply(ctx context.Context, dialect gorm.Dialect, wheres *[]string, values *[]interface{}, joins *[]string) error {
-	return f.ApplyWithAlias(ctx, dialect, "changelogs", wheres, values, joins)
+	return f.ApplyWithAlias(ctx, dialect, TableName("changelogs"), wheres, values, joins)
 }
 func (f *ChangelogFilterType) ApplyWithAlias(ctx context.Context, dialect gorm.Dialect, alias string, wheres *[]string, values *[]interface{}, joins *[]string) error {
 	if f == nil {
