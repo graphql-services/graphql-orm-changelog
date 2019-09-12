@@ -49,17 +49,18 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Changelog struct {
-		Changes    func(childComplexity int) int
-		ChangesIds func(childComplexity int) int
-		CreatedAt  func(childComplexity int) int
-		CreatedBy  func(childComplexity int) int
-		Date       func(childComplexity int) int
-		Entity     func(childComplexity int) int
-		EntityID   func(childComplexity int) int
-		ID         func(childComplexity int) int
-		Type       func(childComplexity int) int
-		UpdatedAt  func(childComplexity int) int
-		UpdatedBy  func(childComplexity int) int
+		Changes     func(childComplexity int) int
+		ChangesIds  func(childComplexity int) int
+		CreatedAt   func(childComplexity int) int
+		CreatedBy   func(childComplexity int) int
+		Date        func(childComplexity int) int
+		Entity      func(childComplexity int) int
+		EntityID    func(childComplexity int) int
+		ID          func(childComplexity int) int
+		PrincipalID func(childComplexity int) int
+		Type        func(childComplexity int) int
+		UpdatedAt   func(childComplexity int) int
+		UpdatedBy   func(childComplexity int) int
 	}
 
 	ChangelogChange struct {
@@ -215,6 +216,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Changelog.ID(childComplexity), true
+
+	case "Changelog.principalID":
+		if e.complexity.Changelog.PrincipalID == nil {
+			break
+		}
+
+		return e.complexity.Changelog.PrincipalID(childComplexity), true
 
 	case "Changelog.type":
 		if e.complexity.Changelog.Type == nil {
@@ -611,6 +619,7 @@ type Changelog {
   id: ID!
   entity: String!
   entityID: String!
+  principalID: String
   type: ChangelogType!
   date: Time!
   changes: [ChangelogChange!]!
@@ -746,6 +755,7 @@ input ChangelogCreateInput {
   id: ID
   entity: String!
   entityID: String!
+  principalID: String
   type: ChangelogType!
   date: Time!
   changesIds: [ID!]
@@ -754,6 +764,7 @@ input ChangelogCreateInput {
 input ChangelogUpdateInput {
   entity: String
   entityID: String
+  principalID: String
   type: ChangelogType
   date: Time
   changesIds: [ID!]
@@ -766,6 +777,8 @@ enum ChangelogSortType {
   ENTITY_DESC
   ENTITY_ID_ASC
   ENTITY_ID_DESC
+  PRINCIPAL_ID_ASC
+  PRINCIPAL_ID_DESC
   TYPE_ASC
   TYPE_DESC
   DATE_ASC
@@ -812,6 +825,16 @@ input ChangelogFilterType {
   entityID_like: String
   entityID_prefix: String
   entityID_suffix: String
+  principalID: String
+  principalID_ne: String
+  principalID_gt: String
+  principalID_lt: String
+  principalID_gte: String
+  principalID_lte: String
+  principalID_in: [String!]
+  principalID_like: String
+  principalID_prefix: String
+  principalID_suffix: String
   type: ChangelogType
   type_ne: ChangelogType
   type_gt: ChangelogType
@@ -1297,6 +1320,40 @@ func (ec *executionContext) _Changelog_entityID(ctx context.Context, field graph
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
 	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Changelog_principalID(ctx context.Context, field graphql.CollectedField, obj *Changelog) (ret graphql.Marshaler) {
+	ctx = ec.Tracer.StartFieldExecution(ctx, field)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+		ec.Tracer.EndFieldExecution(ctx)
+	}()
+	rctx := &graphql.ResolverContext{
+		Object:   "Changelog",
+		Field:    field,
+		Args:     nil,
+		IsMethod: false,
+	}
+	ctx = graphql.WithResolverContext(ctx, rctx)
+	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.PrincipalID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	rctx.Result = res
+	ctx = ec.Tracer.StartFieldChildExecution(ctx)
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Changelog_type(ctx context.Context, field graphql.CollectedField, obj *Changelog) (ret graphql.Marshaler) {
@@ -4568,6 +4625,66 @@ func (ec *executionContext) unmarshalInputChangelogFilterType(ctx context.Contex
 			if err != nil {
 				return it, err
 			}
+		case "principalID":
+			var err error
+			it.PrincipalID, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID_ne":
+			var err error
+			it.PrincipalIDNe, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID_gt":
+			var err error
+			it.PrincipalIDGt, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID_lt":
+			var err error
+			it.PrincipalIDLt, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID_gte":
+			var err error
+			it.PrincipalIDGte, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID_lte":
+			var err error
+			it.PrincipalIDLte, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID_in":
+			var err error
+			it.PrincipalIDIn, err = ec.unmarshalOString2ᚕstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID_like":
+			var err error
+			it.PrincipalIDLike, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID_prefix":
+			var err error
+			it.PrincipalIDPrefix, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID_suffix":
+			var err error
+			it.PrincipalIDSuffix, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "type":
 			var err error
 			it.Type, err = ec.unmarshalOChangelogType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogType(ctx, v)
@@ -4877,6 +4994,8 @@ func (ec *executionContext) _Changelog(ctx context.Context, sel ast.SelectionSet
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
+		case "principalID":
+			out.Values[i] = ec._Changelog_principalID(ctx, field, obj)
 		case "type":
 			out.Values[i] = ec._Changelog_type(ctx, field, obj)
 			if out.Values[i] == graphql.Null {

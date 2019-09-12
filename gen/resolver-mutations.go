@@ -234,6 +234,11 @@ func CreateChangelogHandler(ctx context.Context, r *GeneratedResolver, input map
 		event.AddNewValue("entityID", changes.EntityID)
 	}
 
+	if _, ok := input["principalID"]; ok && (item.PrincipalID != changes.PrincipalID) && (item.PrincipalID == nil || changes.PrincipalID == nil || *item.PrincipalID != *changes.PrincipalID) {
+		item.PrincipalID = changes.PrincipalID
+		event.AddNewValue("principalID", changes.PrincipalID)
+	}
+
 	if _, ok := input["type"]; ok && (item.Type != changes.Type) {
 		item.Type = changes.Type
 		event.AddNewValue("type", changes.Type)
@@ -309,6 +314,12 @@ func UpdateChangelogHandler(ctx context.Context, r *GeneratedResolver, id string
 		event.AddOldValue("entityID", item.EntityID)
 		event.AddNewValue("entityID", changes.EntityID)
 		item.EntityID = changes.EntityID
+	}
+
+	if _, ok := input["principalID"]; ok && (item.PrincipalID != changes.PrincipalID) && (item.PrincipalID == nil || changes.PrincipalID == nil || *item.PrincipalID != *changes.PrincipalID) {
+		event.AddOldValue("principalID", item.PrincipalID)
+		event.AddNewValue("principalID", changes.PrincipalID)
+		item.PrincipalID = changes.PrincipalID
 	}
 
 	if _, ok := input["type"]; ok && (item.Type != changes.Type) {

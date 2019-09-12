@@ -595,6 +595,47 @@ func (f *ChangelogFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix str
 		values = append(values, fmt.Sprintf("%%%s", *f.EntityIDSuffix))
 	}
 
+	if f.PrincipalID != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" = ?")
+		values = append(values, f.PrincipalID)
+	}
+	if f.PrincipalIDNe != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" != ?")
+		values = append(values, f.PrincipalIDNe)
+	}
+	if f.PrincipalIDGt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" > ?")
+		values = append(values, f.PrincipalIDGt)
+	}
+	if f.PrincipalIDLt != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" < ?")
+		values = append(values, f.PrincipalIDLt)
+	}
+	if f.PrincipalIDGte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" >= ?")
+		values = append(values, f.PrincipalIDGte)
+	}
+	if f.PrincipalIDLte != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" <= ?")
+		values = append(values, f.PrincipalIDLte)
+	}
+	if f.PrincipalIDIn != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" IN (?)")
+		values = append(values, f.PrincipalIDIn)
+	}
+	if f.PrincipalIDLike != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" LIKE ?")
+		values = append(values, strings.Replace(strings.Replace(*f.PrincipalIDLike, "?", "_", -1), "*", "%", -1))
+	}
+	if f.PrincipalIDPrefix != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" LIKE ?")
+		values = append(values, fmt.Sprintf("%s%%", *f.PrincipalIDPrefix))
+	}
+	if f.PrincipalIDSuffix != nil {
+		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" LIKE ?")
+		values = append(values, fmt.Sprintf("%%%s", *f.PrincipalIDSuffix))
+	}
+
 	if f.Type != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" = ?")
 		values = append(values, f.Type)

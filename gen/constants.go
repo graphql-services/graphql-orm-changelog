@@ -50,6 +50,7 @@ type Changelog @key(fields: "id") {
   id: ID!
   entity: String!
   entityID: String!
+  principalID: String
   type: ChangelogType!
   date: Time!
   changes: [ChangelogChange!]!
@@ -185,6 +186,7 @@ input ChangelogCreateInput {
   id: ID
   entity: String!
   entityID: String!
+  principalID: String
   type: ChangelogType!
   date: Time!
   changesIds: [ID!]
@@ -193,6 +195,7 @@ input ChangelogCreateInput {
 input ChangelogUpdateInput {
   entity: String
   entityID: String
+  principalID: String
   type: ChangelogType
   date: Time
   changesIds: [ID!]
@@ -205,6 +208,8 @@ enum ChangelogSortType {
   ENTITY_DESC
   ENTITY_ID_ASC
   ENTITY_ID_DESC
+  PRINCIPAL_ID_ASC
+  PRINCIPAL_ID_DESC
   TYPE_ASC
   TYPE_DESC
   DATE_ASC
@@ -251,6 +256,16 @@ input ChangelogFilterType {
   entityID_like: String
   entityID_prefix: String
   entityID_suffix: String
+  principalID: String
+  principalID_ne: String
+  principalID_gt: String
+  principalID_lt: String
+  principalID_gte: String
+  principalID_lte: String
+  principalID_in: [String!]
+  principalID_like: String
+  principalID_prefix: String
+  principalID_suffix: String
   type: ChangelogType
   type_ne: ChangelogType
   type_gt: ChangelogType

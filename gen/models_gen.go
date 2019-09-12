@@ -92,78 +92,88 @@ type ChangelogChangeFilterType struct {
 }
 
 type ChangelogFilterType struct {
-	And            []*ChangelogFilterType     `json:"AND"`
-	Or             []*ChangelogFilterType     `json:"OR"`
-	ID             *string                    `json:"id"`
-	IDNe           *string                    `json:"id_ne"`
-	IDGt           *string                    `json:"id_gt"`
-	IDLt           *string                    `json:"id_lt"`
-	IDGte          *string                    `json:"id_gte"`
-	IDLte          *string                    `json:"id_lte"`
-	IDIn           []string                   `json:"id_in"`
-	Entity         *string                    `json:"entity"`
-	EntityNe       *string                    `json:"entity_ne"`
-	EntityGt       *string                    `json:"entity_gt"`
-	EntityLt       *string                    `json:"entity_lt"`
-	EntityGte      *string                    `json:"entity_gte"`
-	EntityLte      *string                    `json:"entity_lte"`
-	EntityIn       []string                   `json:"entity_in"`
-	EntityLike     *string                    `json:"entity_like"`
-	EntityPrefix   *string                    `json:"entity_prefix"`
-	EntitySuffix   *string                    `json:"entity_suffix"`
-	EntityID       *string                    `json:"entityID"`
-	EntityIDNe     *string                    `json:"entityID_ne"`
-	EntityIDGt     *string                    `json:"entityID_gt"`
-	EntityIDLt     *string                    `json:"entityID_lt"`
-	EntityIDGte    *string                    `json:"entityID_gte"`
-	EntityIDLte    *string                    `json:"entityID_lte"`
-	EntityIDIn     []string                   `json:"entityID_in"`
-	EntityIDLike   *string                    `json:"entityID_like"`
-	EntityIDPrefix *string                    `json:"entityID_prefix"`
-	EntityIDSuffix *string                    `json:"entityID_suffix"`
-	Type           *ChangelogType             `json:"type"`
-	TypeNe         *ChangelogType             `json:"type_ne"`
-	TypeGt         *ChangelogType             `json:"type_gt"`
-	TypeLt         *ChangelogType             `json:"type_lt"`
-	TypeGte        *ChangelogType             `json:"type_gte"`
-	TypeLte        *ChangelogType             `json:"type_lte"`
-	TypeIn         []ChangelogType            `json:"type_in"`
-	Date           *time.Time                 `json:"date"`
-	DateNe         *time.Time                 `json:"date_ne"`
-	DateGt         *time.Time                 `json:"date_gt"`
-	DateLt         *time.Time                 `json:"date_lt"`
-	DateGte        *time.Time                 `json:"date_gte"`
-	DateLte        *time.Time                 `json:"date_lte"`
-	DateIn         []*time.Time               `json:"date_in"`
-	UpdatedAt      *time.Time                 `json:"updatedAt"`
-	UpdatedAtNe    *time.Time                 `json:"updatedAt_ne"`
-	UpdatedAtGt    *time.Time                 `json:"updatedAt_gt"`
-	UpdatedAtLt    *time.Time                 `json:"updatedAt_lt"`
-	UpdatedAtGte   *time.Time                 `json:"updatedAt_gte"`
-	UpdatedAtLte   *time.Time                 `json:"updatedAt_lte"`
-	UpdatedAtIn    []*time.Time               `json:"updatedAt_in"`
-	CreatedAt      *time.Time                 `json:"createdAt"`
-	CreatedAtNe    *time.Time                 `json:"createdAt_ne"`
-	CreatedAtGt    *time.Time                 `json:"createdAt_gt"`
-	CreatedAtLt    *time.Time                 `json:"createdAt_lt"`
-	CreatedAtGte   *time.Time                 `json:"createdAt_gte"`
-	CreatedAtLte   *time.Time                 `json:"createdAt_lte"`
-	CreatedAtIn    []*time.Time               `json:"createdAt_in"`
-	UpdatedBy      *string                    `json:"updatedBy"`
-	UpdatedByNe    *string                    `json:"updatedBy_ne"`
-	UpdatedByGt    *string                    `json:"updatedBy_gt"`
-	UpdatedByLt    *string                    `json:"updatedBy_lt"`
-	UpdatedByGte   *string                    `json:"updatedBy_gte"`
-	UpdatedByLte   *string                    `json:"updatedBy_lte"`
-	UpdatedByIn    []string                   `json:"updatedBy_in"`
-	CreatedBy      *string                    `json:"createdBy"`
-	CreatedByNe    *string                    `json:"createdBy_ne"`
-	CreatedByGt    *string                    `json:"createdBy_gt"`
-	CreatedByLt    *string                    `json:"createdBy_lt"`
-	CreatedByGte   *string                    `json:"createdBy_gte"`
-	CreatedByLte   *string                    `json:"createdBy_lte"`
-	CreatedByIn    []string                   `json:"createdBy_in"`
-	Changes        *ChangelogChangeFilterType `json:"changes"`
+	And               []*ChangelogFilterType     `json:"AND"`
+	Or                []*ChangelogFilterType     `json:"OR"`
+	ID                *string                    `json:"id"`
+	IDNe              *string                    `json:"id_ne"`
+	IDGt              *string                    `json:"id_gt"`
+	IDLt              *string                    `json:"id_lt"`
+	IDGte             *string                    `json:"id_gte"`
+	IDLte             *string                    `json:"id_lte"`
+	IDIn              []string                   `json:"id_in"`
+	Entity            *string                    `json:"entity"`
+	EntityNe          *string                    `json:"entity_ne"`
+	EntityGt          *string                    `json:"entity_gt"`
+	EntityLt          *string                    `json:"entity_lt"`
+	EntityGte         *string                    `json:"entity_gte"`
+	EntityLte         *string                    `json:"entity_lte"`
+	EntityIn          []string                   `json:"entity_in"`
+	EntityLike        *string                    `json:"entity_like"`
+	EntityPrefix      *string                    `json:"entity_prefix"`
+	EntitySuffix      *string                    `json:"entity_suffix"`
+	EntityID          *string                    `json:"entityID"`
+	EntityIDNe        *string                    `json:"entityID_ne"`
+	EntityIDGt        *string                    `json:"entityID_gt"`
+	EntityIDLt        *string                    `json:"entityID_lt"`
+	EntityIDGte       *string                    `json:"entityID_gte"`
+	EntityIDLte       *string                    `json:"entityID_lte"`
+	EntityIDIn        []string                   `json:"entityID_in"`
+	EntityIDLike      *string                    `json:"entityID_like"`
+	EntityIDPrefix    *string                    `json:"entityID_prefix"`
+	EntityIDSuffix    *string                    `json:"entityID_suffix"`
+	PrincipalID       *string                    `json:"principalID"`
+	PrincipalIDNe     *string                    `json:"principalID_ne"`
+	PrincipalIDGt     *string                    `json:"principalID_gt"`
+	PrincipalIDLt     *string                    `json:"principalID_lt"`
+	PrincipalIDGte    *string                    `json:"principalID_gte"`
+	PrincipalIDLte    *string                    `json:"principalID_lte"`
+	PrincipalIDIn     []string                   `json:"principalID_in"`
+	PrincipalIDLike   *string                    `json:"principalID_like"`
+	PrincipalIDPrefix *string                    `json:"principalID_prefix"`
+	PrincipalIDSuffix *string                    `json:"principalID_suffix"`
+	Type              *ChangelogType             `json:"type"`
+	TypeNe            *ChangelogType             `json:"type_ne"`
+	TypeGt            *ChangelogType             `json:"type_gt"`
+	TypeLt            *ChangelogType             `json:"type_lt"`
+	TypeGte           *ChangelogType             `json:"type_gte"`
+	TypeLte           *ChangelogType             `json:"type_lte"`
+	TypeIn            []ChangelogType            `json:"type_in"`
+	Date              *time.Time                 `json:"date"`
+	DateNe            *time.Time                 `json:"date_ne"`
+	DateGt            *time.Time                 `json:"date_gt"`
+	DateLt            *time.Time                 `json:"date_lt"`
+	DateGte           *time.Time                 `json:"date_gte"`
+	DateLte           *time.Time                 `json:"date_lte"`
+	DateIn            []*time.Time               `json:"date_in"`
+	UpdatedAt         *time.Time                 `json:"updatedAt"`
+	UpdatedAtNe       *time.Time                 `json:"updatedAt_ne"`
+	UpdatedAtGt       *time.Time                 `json:"updatedAt_gt"`
+	UpdatedAtLt       *time.Time                 `json:"updatedAt_lt"`
+	UpdatedAtGte      *time.Time                 `json:"updatedAt_gte"`
+	UpdatedAtLte      *time.Time                 `json:"updatedAt_lte"`
+	UpdatedAtIn       []*time.Time               `json:"updatedAt_in"`
+	CreatedAt         *time.Time                 `json:"createdAt"`
+	CreatedAtNe       *time.Time                 `json:"createdAt_ne"`
+	CreatedAtGt       *time.Time                 `json:"createdAt_gt"`
+	CreatedAtLt       *time.Time                 `json:"createdAt_lt"`
+	CreatedAtGte      *time.Time                 `json:"createdAt_gte"`
+	CreatedAtLte      *time.Time                 `json:"createdAt_lte"`
+	CreatedAtIn       []*time.Time               `json:"createdAt_in"`
+	UpdatedBy         *string                    `json:"updatedBy"`
+	UpdatedByNe       *string                    `json:"updatedBy_ne"`
+	UpdatedByGt       *string                    `json:"updatedBy_gt"`
+	UpdatedByLt       *string                    `json:"updatedBy_lt"`
+	UpdatedByGte      *string                    `json:"updatedBy_gte"`
+	UpdatedByLte      *string                    `json:"updatedBy_lte"`
+	UpdatedByIn       []string                   `json:"updatedBy_in"`
+	CreatedBy         *string                    `json:"createdBy"`
+	CreatedByNe       *string                    `json:"createdBy_ne"`
+	CreatedByGt       *string                    `json:"createdBy_gt"`
+	CreatedByLt       *string                    `json:"createdBy_lt"`
+	CreatedByGte      *string                    `json:"createdBy_gte"`
+	CreatedByLte      *string                    `json:"createdBy_lte"`
+	CreatedByIn       []string                   `json:"createdBy_in"`
+	Changes           *ChangelogChangeFilterType `json:"changes"`
 }
 
 type _Service struct {
@@ -246,26 +256,28 @@ func (e ChangelogChangeSortType) MarshalGQL(w io.Writer) {
 type ChangelogSortType string
 
 const (
-	ChangelogSortTypeIDAsc          ChangelogSortType = "ID_ASC"
-	ChangelogSortTypeIDDesc         ChangelogSortType = "ID_DESC"
-	ChangelogSortTypeEntityAsc      ChangelogSortType = "ENTITY_ASC"
-	ChangelogSortTypeEntityDesc     ChangelogSortType = "ENTITY_DESC"
-	ChangelogSortTypeEntityIDAsc    ChangelogSortType = "ENTITY_ID_ASC"
-	ChangelogSortTypeEntityIDDesc   ChangelogSortType = "ENTITY_ID_DESC"
-	ChangelogSortTypeTypeAsc        ChangelogSortType = "TYPE_ASC"
-	ChangelogSortTypeTypeDesc       ChangelogSortType = "TYPE_DESC"
-	ChangelogSortTypeDateAsc        ChangelogSortType = "DATE_ASC"
-	ChangelogSortTypeDateDesc       ChangelogSortType = "DATE_DESC"
-	ChangelogSortTypeUpdatedAtAsc   ChangelogSortType = "UPDATED_AT_ASC"
-	ChangelogSortTypeUpdatedAtDesc  ChangelogSortType = "UPDATED_AT_DESC"
-	ChangelogSortTypeCreatedAtAsc   ChangelogSortType = "CREATED_AT_ASC"
-	ChangelogSortTypeCreatedAtDesc  ChangelogSortType = "CREATED_AT_DESC"
-	ChangelogSortTypeUpdatedByAsc   ChangelogSortType = "UPDATED_BY_ASC"
-	ChangelogSortTypeUpdatedByDesc  ChangelogSortType = "UPDATED_BY_DESC"
-	ChangelogSortTypeCreatedByAsc   ChangelogSortType = "CREATED_BY_ASC"
-	ChangelogSortTypeCreatedByDesc  ChangelogSortType = "CREATED_BY_DESC"
-	ChangelogSortTypeChangesIDSAsc  ChangelogSortType = "CHANGES_IDS_ASC"
-	ChangelogSortTypeChangesIDSDesc ChangelogSortType = "CHANGES_IDS_DESC"
+	ChangelogSortTypeIDAsc           ChangelogSortType = "ID_ASC"
+	ChangelogSortTypeIDDesc          ChangelogSortType = "ID_DESC"
+	ChangelogSortTypeEntityAsc       ChangelogSortType = "ENTITY_ASC"
+	ChangelogSortTypeEntityDesc      ChangelogSortType = "ENTITY_DESC"
+	ChangelogSortTypeEntityIDAsc     ChangelogSortType = "ENTITY_ID_ASC"
+	ChangelogSortTypeEntityIDDesc    ChangelogSortType = "ENTITY_ID_DESC"
+	ChangelogSortTypePrincipalIDAsc  ChangelogSortType = "PRINCIPAL_ID_ASC"
+	ChangelogSortTypePrincipalIDDesc ChangelogSortType = "PRINCIPAL_ID_DESC"
+	ChangelogSortTypeTypeAsc         ChangelogSortType = "TYPE_ASC"
+	ChangelogSortTypeTypeDesc        ChangelogSortType = "TYPE_DESC"
+	ChangelogSortTypeDateAsc         ChangelogSortType = "DATE_ASC"
+	ChangelogSortTypeDateDesc        ChangelogSortType = "DATE_DESC"
+	ChangelogSortTypeUpdatedAtAsc    ChangelogSortType = "UPDATED_AT_ASC"
+	ChangelogSortTypeUpdatedAtDesc   ChangelogSortType = "UPDATED_AT_DESC"
+	ChangelogSortTypeCreatedAtAsc    ChangelogSortType = "CREATED_AT_ASC"
+	ChangelogSortTypeCreatedAtDesc   ChangelogSortType = "CREATED_AT_DESC"
+	ChangelogSortTypeUpdatedByAsc    ChangelogSortType = "UPDATED_BY_ASC"
+	ChangelogSortTypeUpdatedByDesc   ChangelogSortType = "UPDATED_BY_DESC"
+	ChangelogSortTypeCreatedByAsc    ChangelogSortType = "CREATED_BY_ASC"
+	ChangelogSortTypeCreatedByDesc   ChangelogSortType = "CREATED_BY_DESC"
+	ChangelogSortTypeChangesIDSAsc   ChangelogSortType = "CHANGES_IDS_ASC"
+	ChangelogSortTypeChangesIDSDesc  ChangelogSortType = "CHANGES_IDS_DESC"
 )
 
 var AllChangelogSortType = []ChangelogSortType{
@@ -275,6 +287,8 @@ var AllChangelogSortType = []ChangelogSortType{
 	ChangelogSortTypeEntityDesc,
 	ChangelogSortTypeEntityIDAsc,
 	ChangelogSortTypeEntityIDDesc,
+	ChangelogSortTypePrincipalIDAsc,
+	ChangelogSortTypePrincipalIDDesc,
 	ChangelogSortTypeTypeAsc,
 	ChangelogSortTypeTypeDesc,
 	ChangelogSortTypeDateAsc,
@@ -293,7 +307,7 @@ var AllChangelogSortType = []ChangelogSortType{
 
 func (e ChangelogSortType) IsValid() bool {
 	switch e {
-	case ChangelogSortTypeIDAsc, ChangelogSortTypeIDDesc, ChangelogSortTypeEntityAsc, ChangelogSortTypeEntityDesc, ChangelogSortTypeEntityIDAsc, ChangelogSortTypeEntityIDDesc, ChangelogSortTypeTypeAsc, ChangelogSortTypeTypeDesc, ChangelogSortTypeDateAsc, ChangelogSortTypeDateDesc, ChangelogSortTypeUpdatedAtAsc, ChangelogSortTypeUpdatedAtDesc, ChangelogSortTypeCreatedAtAsc, ChangelogSortTypeCreatedAtDesc, ChangelogSortTypeUpdatedByAsc, ChangelogSortTypeUpdatedByDesc, ChangelogSortTypeCreatedByAsc, ChangelogSortTypeCreatedByDesc, ChangelogSortTypeChangesIDSAsc, ChangelogSortTypeChangesIDSDesc:
+	case ChangelogSortTypeIDAsc, ChangelogSortTypeIDDesc, ChangelogSortTypeEntityAsc, ChangelogSortTypeEntityDesc, ChangelogSortTypeEntityIDAsc, ChangelogSortTypeEntityIDDesc, ChangelogSortTypePrincipalIDAsc, ChangelogSortTypePrincipalIDDesc, ChangelogSortTypeTypeAsc, ChangelogSortTypeTypeDesc, ChangelogSortTypeDateAsc, ChangelogSortTypeDateDesc, ChangelogSortTypeUpdatedAtAsc, ChangelogSortTypeUpdatedAtDesc, ChangelogSortTypeCreatedAtAsc, ChangelogSortTypeCreatedAtDesc, ChangelogSortTypeUpdatedByAsc, ChangelogSortTypeUpdatedByDesc, ChangelogSortTypeCreatedByAsc, ChangelogSortTypeCreatedByDesc, ChangelogSortTypeChangesIDSAsc, ChangelogSortTypeChangesIDSDesc:
 		return true
 	}
 	return false

@@ -138,6 +138,11 @@ func (qf *ChangelogQueryFilter) applyQueryWithFields(dialect gorm.Dialect, field
 		*values = append(*values, fmt.Sprintf("%s%%", query), fmt.Sprintf("%% %s%%", query))
 	}
 
+	if _, ok := fieldsMap["principalID"]; ok {
+		*ors = append(*ors, fmt.Sprintf("%[1]s"+dialect.Quote("principalID")+" LIKE ? OR %[1]s"+dialect.Quote("principalID")+" LIKE ?", dialect.Quote(alias)+"."))
+		*values = append(*values, fmt.Sprintf("%s%%", query), fmt.Sprintf("%% %s%%", query))
+	}
+
 	if fs, ok := fieldsMap["changes"]; ok {
 		_fields := []*ast.Field{}
 		_alias := alias + "_changes"

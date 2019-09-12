@@ -115,6 +115,10 @@ func startServer(enableCors bool, port string) error {
 		log.Fatal(h.ListenAndServe())
 	}()
 
+	go func(){
+		src.StartCloudEventsServer(db)
+	}()
+
 	<-stop
 
 	log.Println("\nShutting down the server...")

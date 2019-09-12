@@ -55,15 +55,16 @@ type ChangelogResultType struct {
 }
 
 type Changelog struct {
-	ID        string        `json:"id" gorm:"column:id;primary_key"`
-	Entity    string        `json:"entity" gorm:"column:entity"`
-	EntityID  string        `json:"entityID" gorm:"column:entityID"`
-	Type      ChangelogType `json:"type" gorm:"column:type"`
-	Date      time.Time     `json:"date" gorm:"column:date"`
-	UpdatedAt *time.Time    `json:"updatedAt" gorm:"column:updatedAt"`
-	CreatedAt time.Time     `json:"createdAt" gorm:"column:createdAt"`
-	UpdatedBy *string       `json:"updatedBy" gorm:"column:updatedBy"`
-	CreatedBy *string       `json:"createdBy" gorm:"column:createdBy"`
+	ID          string        `json:"id" gorm:"column:id;primary_key"`
+	Entity      string        `json:"entity" gorm:"column:entity"`
+	EntityID    string        `json:"entityID" gorm:"column:entityID"`
+	PrincipalID *string       `json:"principalID" gorm:"column:principalID"`
+	Type        ChangelogType `json:"type" gorm:"column:type"`
+	Date        time.Time     `json:"date" gorm:"column:date"`
+	UpdatedAt   *time.Time    `json:"updatedAt" gorm:"column:updatedAt"`
+	CreatedAt   time.Time     `json:"createdAt" gorm:"column:createdAt"`
+	UpdatedBy   *string       `json:"updatedBy" gorm:"column:updatedBy"`
+	CreatedBy   *string       `json:"createdBy" gorm:"column:createdBy"`
 
 	Changes []*ChangelogChange `json:"changes" gorm:"foreignkey:LogID"`
 }
@@ -71,15 +72,16 @@ type Changelog struct {
 func (m *Changelog) Is_Entity() {}
 
 type ChangelogChanges struct {
-	ID        string
-	Entity    string
-	EntityID  string
-	Type      ChangelogType
-	Date      time.Time
-	UpdatedAt *time.Time
-	CreatedAt time.Time
-	UpdatedBy *string
-	CreatedBy *string
+	ID          string
+	Entity      string
+	EntityID    string
+	PrincipalID *string
+	Type        ChangelogType
+	Date        time.Time
+	UpdatedAt   *time.Time
+	CreatedAt   time.Time
+	UpdatedBy   *string
+	CreatedBy   *string
 
 	ChangesIDs []*string
 }
