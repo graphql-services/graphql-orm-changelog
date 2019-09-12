@@ -60,13 +60,21 @@ func storeEvent(tx *gorm.DB, event *events.Event) error {
 
 	changes := []*gen.ChangelogChange{}
 	for _, ch := range event.Changes {
-		oldValue := fmt.Sprintf("%v", ch.OldValue)
-		newValue := fmt.Sprintf("%v", ch.NewValue)
+		var oldValue *string
+		var newValue *string
+		if ch.OldValue != nil {
+			v := fmt.Sprintf("%v", *ch.OldValue)
+			oldValue = &v
+		}
+		if ch.NewValue != nil {
+			v := fmt.Sprintf("%v", *ch.NewValue)
+			newValue = &v
+		}
 		change := &gen.ChangelogChange{
 			ID:       uuid.Must(uuid.NewV4()).String(),
 			Column:   ch.Name,
-			OldValue: &oldValue,
-			NewValue: &newValue,
+			OldValue: oldValue,
+			NewValue: newValue,
 		}
 		if err := tx.Create(change).Error; err != nil {
 			return err
