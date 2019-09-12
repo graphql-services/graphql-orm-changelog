@@ -1,0 +1,55 @@
+# Generated with graphql-orm
+
+schema:
+  - schema.graphql
+exec:
+  filename: generated.go
+  package: gen
+model:
+  filename: models_gen.go
+  package: gen
+resolver:
+  filename: resolver.go
+  type: Resolver
+  package: gen
+
+models:
+  
+  ChangelogChange:
+    model: github.com/novacloudcz/graphql-orm-changelog/gen.ChangelogChange
+    fields:
+      log:
+        resolver: true
+  ChangelogChangeResultType:
+    model: github.com/novacloudcz/graphql-orm-changelog/gen.ChangelogChangeResultType
+    fields:
+      count:
+        resolver: true
+      items:
+        resolver: true
+  ChangelogChangeCreateInput:
+    model: "map[string]interface{}"
+  ChangelogChangeUpdateInput:
+    model: "map[string]interface{}"
+  
+  Changelog:
+    model: github.com/novacloudcz/graphql-orm-changelog/gen.Changelog
+    fields:
+      changes:
+        resolver: true
+  ChangelogResultType:
+    model: github.com/novacloudcz/graphql-orm-changelog/gen.ChangelogResultType
+    fields:
+      count:
+        resolver: true
+      items:
+        resolver: true
+  ChangelogCreateInput:
+    model: "map[string]interface{}"
+  ChangelogUpdateInput:
+    model: "map[string]interface{}"
+  
+  
+  
+  _Any:
+    model: github.com/novacloudcz/graphql-orm-changelog/gen._Any
