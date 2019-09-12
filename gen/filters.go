@@ -66,7 +66,7 @@ func (f *ChangelogChangeFilterType) ApplyWithAlias(ctx context.Context, dialect 
 
 	if f.Log != nil {
 		_alias := alias + "_log"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote("changelogs")+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("logId"))
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("changelogs"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("logId"))
 		err := f.Log.ApplyWithAlias(ctx, dialect, _alias, wheres, values, joins)
 		if err != nil {
 			return err
@@ -470,7 +470,7 @@ func (f *ChangelogFilterType) ApplyWithAlias(ctx context.Context, dialect gorm.D
 
 	if f.Changes != nil {
 		_alias := alias + "_changes"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote("changelog_changes")+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+"."+dialect.Quote("logId")+" = "+dialect.Quote(alias)+".id")
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("changelog_changes"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+"."+dialect.Quote("logId")+" = "+dialect.Quote(alias)+".id")
 		err := f.Changes.ApplyWithAlias(ctx, dialect, _alias, wheres, values, joins)
 		if err != nil {
 			return err

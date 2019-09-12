@@ -68,7 +68,7 @@ func (qf *ChangelogChangeQueryFilter) applyQueryWithFields(dialect gorm.Dialect,
 	if fs, ok := fieldsMap["log"]; ok {
 		_fields := []*ast.Field{}
 		_alias := alias + "_log"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote("changelogs")+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("logId"))
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("changelogs"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("logId"))
 
 		for _, f := range fs {
 			for _, s := range f.SelectionSet {
@@ -146,7 +146,7 @@ func (qf *ChangelogQueryFilter) applyQueryWithFields(dialect gorm.Dialect, field
 	if fs, ok := fieldsMap["changes"]; ok {
 		_fields := []*ast.Field{}
 		_alias := alias + "_changes"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote("changelog_changes")+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+"."+dialect.Quote("logId")+" = "+dialect.Quote(alias)+".id")
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("changelog_changes"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+"."+dialect.Quote("logId")+" = "+dialect.Quote(alias)+".id")
 
 		for _, f := range fs {
 			for _, s := range f.SelectionSet {
