@@ -64,8 +64,13 @@ func storeEvent(tx *gorm.DB, event *events.Event) error {
 			Log:      log,
 		})
 	}
+	log.Changes = changes
 
-	return tx.Create(log).Error
+	if err := tx.Set("gorm:association_autocreate", true).Set("gorm:association_autoupdate", true).Create(log).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func StartCloudEventsServer(db *gen.DB) error {
