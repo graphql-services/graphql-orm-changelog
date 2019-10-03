@@ -25,5 +25,5 @@ type Changelog @entity @key(fields: "id") {
   date: Time! @column
 
   # List of changes
-  changes: [ChangelogChange!]! @relationship(inverse: "log")
+  changes: [ChangelogChange!]! @relationship(inverse: "log", preload: true)
 }

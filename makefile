@@ -34,7 +34,7 @@ migrate:
 	TABLE_NAME_PREFIX=test DATABASE_URL=sqlite3://test.db PORT=8080 go run *.go migrate
 
 run:
-	TABLE_NAME_PREFIX=test DATABASE_URL=sqlite3://test.db CLOUDEVENTS_PORT=8081 PORT=8080 go run *.go start --cors
+	DEBUG=true TABLE_NAME_PREFIX=test DATABASE_URL=sqlite3://test.db CLOUDEVENTS_PORT=8081 PORT=8080 go run *.go start --cors
 
 voyager:
 	docker run --rm -v `pwd`/gen/schema.graphql:/app/schema.graphql -p 8080:80 graphql/voyager

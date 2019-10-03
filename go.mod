@@ -11,9 +11,11 @@ require (
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/mux v1.6.2 // indirect
 	github.com/graph-gophers/dataloader v5.0.0+incompatible
+	github.com/iancoleman/strcase v0.0.0-20190422225806-e506e3ef7365
 	github.com/jinzhu/gorm v1.9.10
 	github.com/mitchellh/mapstructure v0.0.0-20180203102830-a4e142e9c047
-	github.com/novacloudcz/graphql-orm v0.0.0-20190912114504-1f558d910934
+	github.com/novacloudcz/graphql-orm v0.0.6-0.20191003120942-b02658bf522d
+
 	github.com/rs/cors v1.6.0
 	github.com/urfave/cli v1.21.0
 	github.com/vektah/gqlparser v1.1.2

@@ -5,7 +5,6 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/graph-gophers/dataloader"
-	"github.com/novacloudcz/graphql-orm/resolvers"
 	"github.com/vektah/gqlparser/ast"
 )
 
@@ -30,7 +29,7 @@ func QueryChangelogChangeHandler(ctx context.Context, r *GeneratedResolver, opts
 	offset := 0
 	limit := 1
 	rt := &ChangelogChangeResultType{
-		EntityResultType: resolvers.EntityResultType{
+		EntityResultType: EntityResultType{
 			Offset: &offset,
 			Limit:  &limit,
 			Query:  &query,
@@ -43,7 +42,11 @@ func QueryChangelogChangeHandler(ctx context.Context, r *GeneratedResolver, opts
 	}
 
 	var items []*ChangelogChange
-	err := rt.GetItems(ctx, qb, TableName("changelog_changes"), &items)
+	giOpts := GetItemsOptions{
+		Alias:      TableName("changelog_changes"),
+		Preloaders: []string{},
+	}
+	err := rt.GetItems(ctx, qb, giOpts, &items)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +75,7 @@ func (r *GeneratedQueryResolver) ChangelogChanges(ctx context.Context, offset *i
 	return r.Handlers.QueryChangelogChanges(ctx, r.GeneratedResolver, opts)
 }
 func QueryChangelogChangesHandler(ctx context.Context, r *GeneratedResolver, opts QueryChangelogChangesHandlerOptions) (*ChangelogChangeResultType, error) {
-	_sort := []resolvers.EntitySort{}
+	_sort := []EntitySort{}
 	for _, s := range opts.Sort {
 		_sort = append(_sort, s)
 	}
@@ -86,7 +89,7 @@ func QueryChangelogChangesHandler(ctx context.Context, r *GeneratedResolver, opt
 	}
 
 	return &ChangelogChangeResultType{
-		EntityResultType: resolvers.EntityResultType{
+		EntityResultType: EntityResultType{
 			Offset:       opts.Offset,
 			Limit:        opts.Limit,
 			Query:        &query,
@@ -100,7 +103,11 @@ func QueryChangelogChangesHandler(ctx context.Context, r *GeneratedResolver, opt
 type GeneratedChangelogChangeResultTypeResolver struct{ *GeneratedResolver }
 
 func (r *GeneratedChangelogChangeResultTypeResolver) Items(ctx context.Context, obj *ChangelogChangeResultType) (items []*ChangelogChange, err error) {
-	err = obj.GetItems(ctx, r.DB.db, TableName("changelog_changes"), &items)
+	giOpts := GetItemsOptions{
+		Alias:      TableName("changelog_changes"),
+		Preloaders: []string{},
+	}
+	err = obj.GetItems(ctx, r.DB.db, giOpts, &items)
 	return
 }
 
@@ -145,7 +152,7 @@ func QueryChangelogHandler(ctx context.Context, r *GeneratedResolver, opts Query
 	offset := 0
 	limit := 1
 	rt := &ChangelogResultType{
-		EntityResultType: resolvers.EntityResultType{
+		EntityResultType: EntityResultType{
 			Offset: &offset,
 			Limit:  &limit,
 			Query:  &query,
@@ -158,7 +165,13 @@ func QueryChangelogHandler(ctx context.Context, r *GeneratedResolver, opts Query
 	}
 
 	var items []*Changelog
-	err := rt.GetItems(ctx, qb, TableName("changelogs"), &items)
+	giOpts := GetItemsOptions{
+		Alias: TableName("changelogs"),
+		Preloaders: []string{
+			"Changes",
+		},
+	}
+	err := rt.GetItems(ctx, qb, giOpts, &items)
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +200,7 @@ func (r *GeneratedQueryResolver) Changelogs(ctx context.Context, offset *int, li
 	return r.Handlers.QueryChangelogs(ctx, r.GeneratedResolver, opts)
 }
 func QueryChangelogsHandler(ctx context.Context, r *GeneratedResolver, opts QueryChangelogsHandlerOptions) (*ChangelogResultType, error) {
-	_sort := []resolvers.EntitySort{}
+	_sort := []EntitySort{}
 	for _, s := range opts.Sort {
 		_sort = append(_sort, s)
 	}
@@ -201,7 +214,7 @@ func QueryChangelogsHandler(ctx context.Context, r *GeneratedResolver, opts Quer
 	}
 
 	return &ChangelogResultType{
-		EntityResultType: resolvers.EntityResultType{
+		EntityResultType: EntityResultType{
 			Offset:       opts.Offset,
 			Limit:        opts.Limit,
 			Query:        &query,
@@ -215,7 +228,13 @@ func QueryChangelogsHandler(ctx context.Context, r *GeneratedResolver, opts Quer
 type GeneratedChangelogResultTypeResolver struct{ *GeneratedResolver }
 
 func (r *GeneratedChangelogResultTypeResolver) Items(ctx context.Context, obj *ChangelogResultType) (items []*Changelog, err error) {
-	err = obj.GetItems(ctx, r.DB.db, TableName("changelogs"), &items)
+	giOpts := GetItemsOptions{
+		Alias: TableName("changelogs"),
+		Preloaders: []string{
+			"Changes",
+		},
+	}
+	err = obj.GetItems(ctx, r.DB.db, giOpts, &items)
 	return
 }
 
@@ -230,9 +249,7 @@ func (r *GeneratedChangelogResolver) Changes(ctx context.Context, obj *Changelog
 }
 func ChangelogChangesHandler(ctx context.Context, r *GeneratedChangelogResolver, obj *Changelog) (res []*ChangelogChange, err error) {
 
-	items := []*ChangelogChange{}
-	err = r.DB.Query().Model(obj).Related(&items, "Changes").Error
-	res = items
+	res = obj.Changes
 
 	return
 }

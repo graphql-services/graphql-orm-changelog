@@ -6,7 +6,6 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/novacloudcz/graphql-orm/events"
-	"github.com/novacloudcz/graphql-orm/resolvers"
 )
 
 type GeneratedMutationResolver struct{ *GeneratedResolver }
@@ -100,7 +99,7 @@ func UpdateChangelogChangeHandler(ctx context.Context, r *GeneratedResolver, id 
 		return
 	}
 
-	err = resolvers.GetItem(ctx, tx, item, &id)
+	err = GetItem(ctx, tx, item, &id)
 	if err != nil {
 		return
 	}
@@ -160,7 +159,7 @@ func DeleteChangelogChangeHandler(ctx context.Context, r *GeneratedResolver, id 
 	now := time.Now()
 	tx := r.DB.db.Begin()
 
-	err = resolvers.GetItem(ctx, tx, item, &id)
+	err = GetItem(ctx, tx, item, &id)
 	if err != nil {
 		return
 	}
@@ -297,7 +296,7 @@ func UpdateChangelogHandler(ctx context.Context, r *GeneratedResolver, id string
 		return
 	}
 
-	err = resolvers.GetItem(ctx, tx, item, &id)
+	err = GetItem(ctx, tx, item, &id)
 	if err != nil {
 		return
 	}
@@ -370,7 +369,7 @@ func DeleteChangelogHandler(ctx context.Context, r *GeneratedResolver, id string
 	now := time.Now()
 	tx := r.DB.db.Begin()
 
-	err = resolvers.GetItem(ctx, tx, item, &id)
+	err = GetItem(ctx, tx, item, &id)
 	if err != nil {
 		return
 	}
