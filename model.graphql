@@ -6,8 +6,8 @@ enum ChangelogType {
 
 type ChangelogChange @entity {
   column: String! @column
-  oldValue: String @column
-  newValue: String @column
+  oldValue: String @column(type: "text")
+  newValue: String @column(type: "text")
 
   log: Changelog @relationship(inverse: "changes")
 }

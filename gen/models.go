@@ -24,8 +24,8 @@ type ChangelogChangeResultType struct {
 type ChangelogChange struct {
 	ID        string     `json:"id" gorm:"column:id;primary_key"`
 	Column    string     `json:"column" gorm:"column:column"`
-	OldValue  *string    `json:"oldValue" gorm:"column:oldValue"`
-	NewValue  *string    `json:"newValue" gorm:"column:newValue"`
+	OldValue  *string    `json:"oldValue" gorm:"column:oldValue;type:text"`
+	NewValue  *string    `json:"newValue" gorm:"column:newValue;type:text"`
 	LogID     *string    `json:"logId" gorm:"column:logId"`
 	UpdatedAt *time.Time `json:"updatedAt" gorm:"column:updatedAt"`
 	CreatedAt time.Time  `json:"createdAt" gorm:"column:createdAt"`
