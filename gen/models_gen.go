@@ -91,6 +91,19 @@ type ChangelogChangeFilterType struct {
 	Log            *ChangelogFilterType         `json:"log"`
 }
 
+type ChangelogChangeSortType struct {
+	ID        *ObjectSortType    `json:"id"`
+	Column    *ObjectSortType    `json:"column"`
+	OldValue  *ObjectSortType    `json:"oldValue"`
+	NewValue  *ObjectSortType    `json:"newValue"`
+	LogID     *ObjectSortType    `json:"logId"`
+	UpdatedAt *ObjectSortType    `json:"updatedAt"`
+	CreatedAt *ObjectSortType    `json:"createdAt"`
+	UpdatedBy *ObjectSortType    `json:"updatedBy"`
+	CreatedBy *ObjectSortType    `json:"createdBy"`
+	Log       *ChangelogSortType `json:"log"`
+}
+
 type ChangelogFilterType struct {
 	And               []*ChangelogFilterType     `json:"AND"`
 	Or                []*ChangelogFilterType     `json:"OR"`
@@ -176,162 +189,23 @@ type ChangelogFilterType struct {
 	Changes           *ChangelogChangeFilterType `json:"changes"`
 }
 
+type ChangelogSortType struct {
+	ID          *ObjectSortType          `json:"id"`
+	Entity      *ObjectSortType          `json:"entity"`
+	EntityID    *ObjectSortType          `json:"entityID"`
+	PrincipalID *ObjectSortType          `json:"principalID"`
+	Type        *ObjectSortType          `json:"type"`
+	Date        *ObjectSortType          `json:"date"`
+	UpdatedAt   *ObjectSortType          `json:"updatedAt"`
+	CreatedAt   *ObjectSortType          `json:"createdAt"`
+	UpdatedBy   *ObjectSortType          `json:"updatedBy"`
+	CreatedBy   *ObjectSortType          `json:"createdBy"`
+	ChangesIds  *ObjectSortType          `json:"changesIds"`
+	Changes     *ChangelogChangeSortType `json:"changes"`
+}
+
 type _Service struct {
 	Sdl *string `json:"sdl"`
-}
-
-type ChangelogChangeSortType string
-
-const (
-	ChangelogChangeSortTypeIDAsc         ChangelogChangeSortType = "ID_ASC"
-	ChangelogChangeSortTypeIDDesc        ChangelogChangeSortType = "ID_DESC"
-	ChangelogChangeSortTypeColumnAsc     ChangelogChangeSortType = "COLUMN_ASC"
-	ChangelogChangeSortTypeColumnDesc    ChangelogChangeSortType = "COLUMN_DESC"
-	ChangelogChangeSortTypeOldValueAsc   ChangelogChangeSortType = "OLD_VALUE_ASC"
-	ChangelogChangeSortTypeOldValueDesc  ChangelogChangeSortType = "OLD_VALUE_DESC"
-	ChangelogChangeSortTypeNewValueAsc   ChangelogChangeSortType = "NEW_VALUE_ASC"
-	ChangelogChangeSortTypeNewValueDesc  ChangelogChangeSortType = "NEW_VALUE_DESC"
-	ChangelogChangeSortTypeLogIDAsc      ChangelogChangeSortType = "LOG_ID_ASC"
-	ChangelogChangeSortTypeLogIDDesc     ChangelogChangeSortType = "LOG_ID_DESC"
-	ChangelogChangeSortTypeUpdatedAtAsc  ChangelogChangeSortType = "UPDATED_AT_ASC"
-	ChangelogChangeSortTypeUpdatedAtDesc ChangelogChangeSortType = "UPDATED_AT_DESC"
-	ChangelogChangeSortTypeCreatedAtAsc  ChangelogChangeSortType = "CREATED_AT_ASC"
-	ChangelogChangeSortTypeCreatedAtDesc ChangelogChangeSortType = "CREATED_AT_DESC"
-	ChangelogChangeSortTypeUpdatedByAsc  ChangelogChangeSortType = "UPDATED_BY_ASC"
-	ChangelogChangeSortTypeUpdatedByDesc ChangelogChangeSortType = "UPDATED_BY_DESC"
-	ChangelogChangeSortTypeCreatedByAsc  ChangelogChangeSortType = "CREATED_BY_ASC"
-	ChangelogChangeSortTypeCreatedByDesc ChangelogChangeSortType = "CREATED_BY_DESC"
-)
-
-var AllChangelogChangeSortType = []ChangelogChangeSortType{
-	ChangelogChangeSortTypeIDAsc,
-	ChangelogChangeSortTypeIDDesc,
-	ChangelogChangeSortTypeColumnAsc,
-	ChangelogChangeSortTypeColumnDesc,
-	ChangelogChangeSortTypeOldValueAsc,
-	ChangelogChangeSortTypeOldValueDesc,
-	ChangelogChangeSortTypeNewValueAsc,
-	ChangelogChangeSortTypeNewValueDesc,
-	ChangelogChangeSortTypeLogIDAsc,
-	ChangelogChangeSortTypeLogIDDesc,
-	ChangelogChangeSortTypeUpdatedAtAsc,
-	ChangelogChangeSortTypeUpdatedAtDesc,
-	ChangelogChangeSortTypeCreatedAtAsc,
-	ChangelogChangeSortTypeCreatedAtDesc,
-	ChangelogChangeSortTypeUpdatedByAsc,
-	ChangelogChangeSortTypeUpdatedByDesc,
-	ChangelogChangeSortTypeCreatedByAsc,
-	ChangelogChangeSortTypeCreatedByDesc,
-}
-
-func (e ChangelogChangeSortType) IsValid() bool {
-	switch e {
-	case ChangelogChangeSortTypeIDAsc, ChangelogChangeSortTypeIDDesc, ChangelogChangeSortTypeColumnAsc, ChangelogChangeSortTypeColumnDesc, ChangelogChangeSortTypeOldValueAsc, ChangelogChangeSortTypeOldValueDesc, ChangelogChangeSortTypeNewValueAsc, ChangelogChangeSortTypeNewValueDesc, ChangelogChangeSortTypeLogIDAsc, ChangelogChangeSortTypeLogIDDesc, ChangelogChangeSortTypeUpdatedAtAsc, ChangelogChangeSortTypeUpdatedAtDesc, ChangelogChangeSortTypeCreatedAtAsc, ChangelogChangeSortTypeCreatedAtDesc, ChangelogChangeSortTypeUpdatedByAsc, ChangelogChangeSortTypeUpdatedByDesc, ChangelogChangeSortTypeCreatedByAsc, ChangelogChangeSortTypeCreatedByDesc:
-		return true
-	}
-	return false
-}
-
-func (e ChangelogChangeSortType) String() string {
-	return string(e)
-}
-
-func (e *ChangelogChangeSortType) UnmarshalGQL(v interface{}) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = ChangelogChangeSortType(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid ChangelogChangeSortType", str)
-	}
-	return nil
-}
-
-func (e ChangelogChangeSortType) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
-}
-
-type ChangelogSortType string
-
-const (
-	ChangelogSortTypeIDAsc           ChangelogSortType = "ID_ASC"
-	ChangelogSortTypeIDDesc          ChangelogSortType = "ID_DESC"
-	ChangelogSortTypeEntityAsc       ChangelogSortType = "ENTITY_ASC"
-	ChangelogSortTypeEntityDesc      ChangelogSortType = "ENTITY_DESC"
-	ChangelogSortTypeEntityIDAsc     ChangelogSortType = "ENTITY_ID_ASC"
-	ChangelogSortTypeEntityIDDesc    ChangelogSortType = "ENTITY_ID_DESC"
-	ChangelogSortTypePrincipalIDAsc  ChangelogSortType = "PRINCIPAL_ID_ASC"
-	ChangelogSortTypePrincipalIDDesc ChangelogSortType = "PRINCIPAL_ID_DESC"
-	ChangelogSortTypeTypeAsc         ChangelogSortType = "TYPE_ASC"
-	ChangelogSortTypeTypeDesc        ChangelogSortType = "TYPE_DESC"
-	ChangelogSortTypeDateAsc         ChangelogSortType = "DATE_ASC"
-	ChangelogSortTypeDateDesc        ChangelogSortType = "DATE_DESC"
-	ChangelogSortTypeUpdatedAtAsc    ChangelogSortType = "UPDATED_AT_ASC"
-	ChangelogSortTypeUpdatedAtDesc   ChangelogSortType = "UPDATED_AT_DESC"
-	ChangelogSortTypeCreatedAtAsc    ChangelogSortType = "CREATED_AT_ASC"
-	ChangelogSortTypeCreatedAtDesc   ChangelogSortType = "CREATED_AT_DESC"
-	ChangelogSortTypeUpdatedByAsc    ChangelogSortType = "UPDATED_BY_ASC"
-	ChangelogSortTypeUpdatedByDesc   ChangelogSortType = "UPDATED_BY_DESC"
-	ChangelogSortTypeCreatedByAsc    ChangelogSortType = "CREATED_BY_ASC"
-	ChangelogSortTypeCreatedByDesc   ChangelogSortType = "CREATED_BY_DESC"
-	ChangelogSortTypeChangesIDSAsc   ChangelogSortType = "CHANGES_IDS_ASC"
-	ChangelogSortTypeChangesIDSDesc  ChangelogSortType = "CHANGES_IDS_DESC"
-)
-
-var AllChangelogSortType = []ChangelogSortType{
-	ChangelogSortTypeIDAsc,
-	ChangelogSortTypeIDDesc,
-	ChangelogSortTypeEntityAsc,
-	ChangelogSortTypeEntityDesc,
-	ChangelogSortTypeEntityIDAsc,
-	ChangelogSortTypeEntityIDDesc,
-	ChangelogSortTypePrincipalIDAsc,
-	ChangelogSortTypePrincipalIDDesc,
-	ChangelogSortTypeTypeAsc,
-	ChangelogSortTypeTypeDesc,
-	ChangelogSortTypeDateAsc,
-	ChangelogSortTypeDateDesc,
-	ChangelogSortTypeUpdatedAtAsc,
-	ChangelogSortTypeUpdatedAtDesc,
-	ChangelogSortTypeCreatedAtAsc,
-	ChangelogSortTypeCreatedAtDesc,
-	ChangelogSortTypeUpdatedByAsc,
-	ChangelogSortTypeUpdatedByDesc,
-	ChangelogSortTypeCreatedByAsc,
-	ChangelogSortTypeCreatedByDesc,
-	ChangelogSortTypeChangesIDSAsc,
-	ChangelogSortTypeChangesIDSDesc,
-}
-
-func (e ChangelogSortType) IsValid() bool {
-	switch e {
-	case ChangelogSortTypeIDAsc, ChangelogSortTypeIDDesc, ChangelogSortTypeEntityAsc, ChangelogSortTypeEntityDesc, ChangelogSortTypeEntityIDAsc, ChangelogSortTypeEntityIDDesc, ChangelogSortTypePrincipalIDAsc, ChangelogSortTypePrincipalIDDesc, ChangelogSortTypeTypeAsc, ChangelogSortTypeTypeDesc, ChangelogSortTypeDateAsc, ChangelogSortTypeDateDesc, ChangelogSortTypeUpdatedAtAsc, ChangelogSortTypeUpdatedAtDesc, ChangelogSortTypeCreatedAtAsc, ChangelogSortTypeCreatedAtDesc, ChangelogSortTypeUpdatedByAsc, ChangelogSortTypeUpdatedByDesc, ChangelogSortTypeCreatedByAsc, ChangelogSortTypeCreatedByDesc, ChangelogSortTypeChangesIDSAsc, ChangelogSortTypeChangesIDSDesc:
-		return true
-	}
-	return false
-}
-
-func (e ChangelogSortType) String() string {
-	return string(e)
-}
-
-func (e *ChangelogSortType) UnmarshalGQL(v interface{}) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = ChangelogSortType(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid ChangelogSortType", str)
-	}
-	return nil
-}
-
-func (e ChangelogSortType) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
 }
 
 type ChangelogType string
@@ -374,5 +248,46 @@ func (e *ChangelogType) UnmarshalGQL(v interface{}) error {
 }
 
 func (e ChangelogType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+type ObjectSortType string
+
+const (
+	ObjectSortTypeAsc  ObjectSortType = "ASC"
+	ObjectSortTypeDesc ObjectSortType = "DESC"
+)
+
+var AllObjectSortType = []ObjectSortType{
+	ObjectSortTypeAsc,
+	ObjectSortTypeDesc,
+}
+
+func (e ObjectSortType) IsValid() bool {
+	switch e {
+	case ObjectSortTypeAsc, ObjectSortTypeDesc:
+		return true
+	}
+	return false
+}
+
+func (e ObjectSortType) String() string {
+	return string(e)
+}
+
+func (e *ObjectSortType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = ObjectSortType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid ObjectSortType", str)
+	}
+	return nil
+}
+
+func (e ObjectSortType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
 }

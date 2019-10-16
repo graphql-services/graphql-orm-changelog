@@ -27,6 +27,11 @@ type Mutation {
   deleteAllChangelogs: Boolean!
 }
 
+enum ObjectSortType {
+  ASC
+  DESC
+}
+
 enum ChangelogType {
   CREATED
   UPDATED
@@ -78,25 +83,17 @@ input ChangelogChangeUpdateInput {
   logId: ID
 }
 
-enum ChangelogChangeSortType {
-  ID_ASC
-  ID_DESC
-  COLUMN_ASC
-  COLUMN_DESC
-  OLD_VALUE_ASC
-  OLD_VALUE_DESC
-  NEW_VALUE_ASC
-  NEW_VALUE_DESC
-  LOG_ID_ASC
-  LOG_ID_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_BY_ASC
-  UPDATED_BY_DESC
-  CREATED_BY_ASC
-  CREATED_BY_DESC
+input ChangelogChangeSortType {
+  id: ObjectSortType
+  column: ObjectSortType
+  oldValue: ObjectSortType
+  newValue: ObjectSortType
+  logId: ObjectSortType
+  updatedAt: ObjectSortType
+  createdAt: ObjectSortType
+  updatedBy: ObjectSortType
+  createdBy: ObjectSortType
+  log: ChangelogSortType
 }
 
 input ChangelogChangeFilterType {
@@ -201,29 +198,19 @@ input ChangelogUpdateInput {
   changesIds: [ID!]
 }
 
-enum ChangelogSortType {
-  ID_ASC
-  ID_DESC
-  ENTITY_ASC
-  ENTITY_DESC
-  ENTITY_ID_ASC
-  ENTITY_ID_DESC
-  PRINCIPAL_ID_ASC
-  PRINCIPAL_ID_DESC
-  TYPE_ASC
-  TYPE_DESC
-  DATE_ASC
-  DATE_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_BY_ASC
-  UPDATED_BY_DESC
-  CREATED_BY_ASC
-  CREATED_BY_DESC
-  CHANGES_IDS_ASC
-  CHANGES_IDS_DESC
+input ChangelogSortType {
+  id: ObjectSortType
+  entity: ObjectSortType
+  entityID: ObjectSortType
+  principalID: ObjectSortType
+  type: ObjectSortType
+  date: ObjectSortType
+  updatedAt: ObjectSortType
+  createdAt: ObjectSortType
+  updatedBy: ObjectSortType
+  createdBy: ObjectSortType
+  changesIds: ObjectSortType
+  changes: ChangelogChangeSortType
 }
 
 input ChangelogFilterType {

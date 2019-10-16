@@ -100,8 +100,8 @@ type ComplexityRoot struct {
 	Query struct {
 		Changelog        func(childComplexity int, id *string, q *string, filter *ChangelogFilterType) int
 		ChangelogChange  func(childComplexity int, id *string, q *string, filter *ChangelogChangeFilterType) int
-		ChangelogChanges func(childComplexity int, offset *int, limit *int, q *string, sort []ChangelogChangeSortType, filter *ChangelogChangeFilterType) int
-		Changelogs       func(childComplexity int, offset *int, limit *int, q *string, sort []ChangelogSortType, filter *ChangelogFilterType) int
+		ChangelogChanges func(childComplexity int, offset *int, limit *int, q *string, sort []*ChangelogChangeSortType, filter *ChangelogChangeFilterType) int
+		Changelogs       func(childComplexity int, offset *int, limit *int, q *string, sort []*ChangelogSortType, filter *ChangelogFilterType) int
 		_entities        func(childComplexity int, representations []interface{}) int
 		_service         func(childComplexity int) int
 	}
@@ -141,9 +141,9 @@ type QueryResolver interface {
 	_service(ctx context.Context) (*_Service, error)
 	_entities(ctx context.Context, representations []interface{}) ([]_Entity, error)
 	ChangelogChange(ctx context.Context, id *string, q *string, filter *ChangelogChangeFilterType) (*ChangelogChange, error)
-	ChangelogChanges(ctx context.Context, offset *int, limit *int, q *string, sort []ChangelogChangeSortType, filter *ChangelogChangeFilterType) (*ChangelogChangeResultType, error)
+	ChangelogChanges(ctx context.Context, offset *int, limit *int, q *string, sort []*ChangelogChangeSortType, filter *ChangelogChangeFilterType) (*ChangelogChangeResultType, error)
 	Changelog(ctx context.Context, id *string, q *string, filter *ChangelogFilterType) (*Changelog, error)
-	Changelogs(ctx context.Context, offset *int, limit *int, q *string, sort []ChangelogSortType, filter *ChangelogFilterType) (*ChangelogResultType, error)
+	Changelogs(ctx context.Context, offset *int, limit *int, q *string, sort []*ChangelogSortType, filter *ChangelogFilterType) (*ChangelogResultType, error)
 }
 
 type executableSchema struct {
@@ -463,7 +463,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.ChangelogChanges(childComplexity, args["offset"].(*int), args["limit"].(*int), args["q"].(*string), args["sort"].([]ChangelogChangeSortType), args["filter"].(*ChangelogChangeFilterType)), true
+		return e.complexity.Query.ChangelogChanges(childComplexity, args["offset"].(*int), args["limit"].(*int), args["q"].(*string), args["sort"].([]*ChangelogChangeSortType), args["filter"].(*ChangelogChangeFilterType)), true
 
 	case "Query.changelogs":
 		if e.complexity.Query.Changelogs == nil {
@@ -475,7 +475,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Changelogs(childComplexity, args["offset"].(*int), args["limit"].(*int), args["q"].(*string), args["sort"].([]ChangelogSortType), args["filter"].(*ChangelogFilterType)), true
+		return e.complexity.Query.Changelogs(childComplexity, args["offset"].(*int), args["limit"].(*int), args["q"].(*string), args["sort"].([]*ChangelogSortType), args["filter"].(*ChangelogFilterType)), true
 
 	case "Query._entities":
 		if e.complexity.Query._entities == nil {
@@ -596,6 +596,11 @@ type Mutation {
   deleteAllChangelogs: Boolean!
 }
 
+enum ObjectSortType {
+  ASC
+  DESC
+}
+
 enum ChangelogType {
   CREATED
   UPDATED
@@ -647,25 +652,17 @@ input ChangelogChangeUpdateInput {
   logId: ID
 }
 
-enum ChangelogChangeSortType {
-  ID_ASC
-  ID_DESC
-  COLUMN_ASC
-  COLUMN_DESC
-  OLD_VALUE_ASC
-  OLD_VALUE_DESC
-  NEW_VALUE_ASC
-  NEW_VALUE_DESC
-  LOG_ID_ASC
-  LOG_ID_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_BY_ASC
-  UPDATED_BY_DESC
-  CREATED_BY_ASC
-  CREATED_BY_DESC
+input ChangelogChangeSortType {
+  id: ObjectSortType
+  column: ObjectSortType
+  oldValue: ObjectSortType
+  newValue: ObjectSortType
+  logId: ObjectSortType
+  updatedAt: ObjectSortType
+  createdAt: ObjectSortType
+  updatedBy: ObjectSortType
+  createdBy: ObjectSortType
+  log: ChangelogSortType
 }
 
 input ChangelogChangeFilterType {
@@ -770,29 +767,19 @@ input ChangelogUpdateInput {
   changesIds: [ID!]
 }
 
-enum ChangelogSortType {
-  ID_ASC
-  ID_DESC
-  ENTITY_ASC
-  ENTITY_DESC
-  ENTITY_ID_ASC
-  ENTITY_ID_DESC
-  PRINCIPAL_ID_ASC
-  PRINCIPAL_ID_DESC
-  TYPE_ASC
-  TYPE_DESC
-  DATE_ASC
-  DATE_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_BY_ASC
-  UPDATED_BY_DESC
-  CREATED_BY_ASC
-  CREATED_BY_DESC
-  CHANGES_IDS_ASC
-  CHANGES_IDS_DESC
+input ChangelogSortType {
+  id: ObjectSortType
+  entity: ObjectSortType
+  entityID: ObjectSortType
+  principalID: ObjectSortType
+  type: ObjectSortType
+  date: ObjectSortType
+  updatedAt: ObjectSortType
+  createdAt: ObjectSortType
+  updatedBy: ObjectSortType
+  createdBy: ObjectSortType
+  changesIds: ObjectSortType
+  changes: ChangelogChangeSortType
 }
 
 input ChangelogFilterType {
@@ -1080,9 +1067,9 @@ func (ec *executionContext) field_Query_changelogChanges_args(ctx context.Contex
 		}
 	}
 	args["q"] = arg2
-	var arg3 []ChangelogChangeSortType
+	var arg3 []*ChangelogChangeSortType
 	if tmp, ok := rawArgs["sort"]; ok {
-		arg3, err = ec.unmarshalOChangelogChangeSortType2ᚕgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx, tmp)
+		arg3, err = ec.unmarshalOChangelogChangeSortType2ᚕᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -1156,9 +1143,9 @@ func (ec *executionContext) field_Query_changelogs_args(ctx context.Context, raw
 		}
 	}
 	args["q"] = arg2
-	var arg3 []ChangelogSortType
+	var arg3 []*ChangelogSortType
 	if tmp, ok := rawArgs["sort"]; ok {
-		arg3, err = ec.unmarshalOChangelogSortType2ᚕgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx, tmp)
+		arg3, err = ec.unmarshalOChangelogSortType2ᚕᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -2626,7 +2613,7 @@ func (ec *executionContext) _Query_changelogChanges(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().ChangelogChanges(rctx, args["offset"].(*int), args["limit"].(*int), args["q"].(*string), args["sort"].([]ChangelogChangeSortType), args["filter"].(*ChangelogChangeFilterType))
+		return ec.resolvers.Query().ChangelogChanges(rctx, args["offset"].(*int), args["limit"].(*int), args["q"].(*string), args["sort"].([]*ChangelogChangeSortType), args["filter"].(*ChangelogChangeFilterType))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2708,7 +2695,7 @@ func (ec *executionContext) _Query_changelogs(ctx context.Context, field graphql
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Changelogs(rctx, args["offset"].(*int), args["limit"].(*int), args["q"].(*string), args["sort"].([]ChangelogSortType), args["filter"].(*ChangelogFilterType))
+		return ec.resolvers.Query().Changelogs(rctx, args["offset"].(*int), args["limit"].(*int), args["q"].(*string), args["sort"].([]*ChangelogSortType), args["filter"].(*ChangelogFilterType))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4445,6 +4432,78 @@ func (ec *executionContext) unmarshalInputChangelogChangeFilterType(ctx context.
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputChangelogChangeSortType(ctx context.Context, obj interface{}) (ChangelogChangeSortType, error) {
+	var it ChangelogChangeSortType
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "column":
+			var err error
+			it.Column, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "oldValue":
+			var err error
+			it.OldValue, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "newValue":
+			var err error
+			it.NewValue, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "logId":
+			var err error
+			it.LogID, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "updatedAt":
+			var err error
+			it.UpdatedAt, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAt":
+			var err error
+			it.CreatedAt, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "updatedBy":
+			var err error
+			it.UpdatedBy, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdBy":
+			var err error
+			it.CreatedBy, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "log":
+			var err error
+			it.Log, err = ec.unmarshalOChangelogSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputChangelogFilterType(ctx context.Context, obj interface{}) (ChangelogFilterType, error) {
 	var it ChangelogFilterType
 	var asMap = obj.(map[string]interface{})
@@ -4940,6 +4999,90 @@ func (ec *executionContext) unmarshalInputChangelogFilterType(ctx context.Contex
 		case "changes":
 			var err error
 			it.Changes, err = ec.unmarshalOChangelogChangeFilterType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeFilterType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputChangelogSortType(ctx context.Context, obj interface{}) (ChangelogSortType, error) {
+	var it ChangelogSortType
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+			it.ID, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "entity":
+			var err error
+			it.Entity, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "entityID":
+			var err error
+			it.EntityID, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "principalID":
+			var err error
+			it.PrincipalID, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "type":
+			var err error
+			it.Type, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "date":
+			var err error
+			it.Date, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "updatedAt":
+			var err error
+			it.UpdatedAt, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdAt":
+			var err error
+			it.CreatedAt, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "updatedBy":
+			var err error
+			it.UpdatedBy, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "createdBy":
+			var err error
+			it.CreatedBy, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "changesIds":
+			var err error
+			it.ChangesIds, err = ec.unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "changes":
+			var err error
+			it.Changes, err = ec.unmarshalOChangelogChangeSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5789,12 +5932,15 @@ func (ec *executionContext) unmarshalNChangelogChangeFilterType2ᚖgithubᚗcom�
 }
 
 func (ec *executionContext) unmarshalNChangelogChangeSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx context.Context, v interface{}) (ChangelogChangeSortType, error) {
-	var res ChangelogChangeSortType
-	return res, res.UnmarshalGQL(v)
+	return ec.unmarshalInputChangelogChangeSortType(ctx, v)
 }
 
-func (ec *executionContext) marshalNChangelogChangeSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx context.Context, sel ast.SelectionSet, v ChangelogChangeSortType) graphql.Marshaler {
-	return v
+func (ec *executionContext) unmarshalNChangelogChangeSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx context.Context, v interface{}) (*ChangelogChangeSortType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalNChangelogChangeSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx, v)
+	return &res, err
 }
 
 func (ec *executionContext) unmarshalNChangelogChangeUpdateInput2map(ctx context.Context, v interface{}) (map[string]interface{}, error) {
@@ -5824,12 +5970,15 @@ func (ec *executionContext) unmarshalNChangelogFilterType2ᚖgithubᚗcomᚋnova
 }
 
 func (ec *executionContext) unmarshalNChangelogSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx context.Context, v interface{}) (ChangelogSortType, error) {
-	var res ChangelogSortType
-	return res, res.UnmarshalGQL(v)
+	return ec.unmarshalInputChangelogSortType(ctx, v)
 }
 
-func (ec *executionContext) marshalNChangelogSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx context.Context, sel ast.SelectionSet, v ChangelogSortType) graphql.Marshaler {
-	return v
+func (ec *executionContext) unmarshalNChangelogSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx context.Context, v interface{}) (*ChangelogSortType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalNChangelogSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx, v)
+	return &res, err
 }
 
 func (ec *executionContext) unmarshalNChangelogType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogType(ctx context.Context, v interface{}) (ChangelogType, error) {
@@ -6368,7 +6517,11 @@ func (ec *executionContext) marshalOChangelogChangeResultType2ᚖgithubᚗcomᚋ
 	return ec._ChangelogChangeResultType(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOChangelogChangeSortType2ᚕgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx context.Context, v interface{}) ([]ChangelogChangeSortType, error) {
+func (ec *executionContext) unmarshalOChangelogChangeSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx context.Context, v interface{}) (ChangelogChangeSortType, error) {
+	return ec.unmarshalInputChangelogChangeSortType(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOChangelogChangeSortType2ᚕᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx context.Context, v interface{}) ([]*ChangelogChangeSortType, error) {
 	var vSlice []interface{}
 	if v != nil {
 		if tmp1, ok := v.([]interface{}); ok {
@@ -6378,9 +6531,9 @@ func (ec *executionContext) unmarshalOChangelogChangeSortType2ᚕgithubᚗcomᚋ
 		}
 	}
 	var err error
-	res := make([]ChangelogChangeSortType, len(vSlice))
+	res := make([]*ChangelogChangeSortType, len(vSlice))
 	for i := range vSlice {
-		res[i], err = ec.unmarshalNChangelogChangeSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNChangelogChangeSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -6388,44 +6541,12 @@ func (ec *executionContext) unmarshalOChangelogChangeSortType2ᚕgithubᚗcomᚋ
 	return res, nil
 }
 
-func (ec *executionContext) marshalOChangelogChangeSortType2ᚕgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx context.Context, sel ast.SelectionSet, v []ChangelogChangeSortType) graphql.Marshaler {
+func (ec *executionContext) unmarshalOChangelogChangeSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx context.Context, v interface{}) (*ChangelogChangeSortType, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		rctx := &graphql.ResolverContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithResolverContext(ctx, rctx)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNChangelogChangeSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-	return ret
+	res, err := ec.unmarshalOChangelogChangeSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogChangeSortType(ctx, v)
+	return &res, err
 }
 
 func (ec *executionContext) unmarshalOChangelogFilterType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogFilterType(ctx context.Context, v interface{}) (ChangelogFilterType, error) {
@@ -6471,7 +6592,11 @@ func (ec *executionContext) marshalOChangelogResultType2ᚖgithubᚗcomᚋnovacl
 	return ec._ChangelogResultType(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOChangelogSortType2ᚕgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx context.Context, v interface{}) ([]ChangelogSortType, error) {
+func (ec *executionContext) unmarshalOChangelogSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx context.Context, v interface{}) (ChangelogSortType, error) {
+	return ec.unmarshalInputChangelogSortType(ctx, v)
+}
+
+func (ec *executionContext) unmarshalOChangelogSortType2ᚕᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx context.Context, v interface{}) ([]*ChangelogSortType, error) {
 	var vSlice []interface{}
 	if v != nil {
 		if tmp1, ok := v.([]interface{}); ok {
@@ -6481,9 +6606,9 @@ func (ec *executionContext) unmarshalOChangelogSortType2ᚕgithubᚗcomᚋnovacl
 		}
 	}
 	var err error
-	res := make([]ChangelogSortType, len(vSlice))
+	res := make([]*ChangelogSortType, len(vSlice))
 	for i := range vSlice {
-		res[i], err = ec.unmarshalNChangelogSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNChangelogSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -6491,44 +6616,12 @@ func (ec *executionContext) unmarshalOChangelogSortType2ᚕgithubᚗcomᚋnovacl
 	return res, nil
 }
 
-func (ec *executionContext) marshalOChangelogSortType2ᚕgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx context.Context, sel ast.SelectionSet, v []ChangelogSortType) graphql.Marshaler {
+func (ec *executionContext) unmarshalOChangelogSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx context.Context, v interface{}) (*ChangelogSortType, error) {
 	if v == nil {
-		return graphql.Null
+		return nil, nil
 	}
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		rctx := &graphql.ResolverContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithResolverContext(ctx, rctx)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNChangelogSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-	return ret
+	res, err := ec.unmarshalOChangelogSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogSortType(ctx, v)
+	return &res, err
 }
 
 func (ec *executionContext) unmarshalOChangelogType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐChangelogType(ctx context.Context, v interface{}) (ChangelogType, error) {
@@ -6691,6 +6784,30 @@ func (ec *executionContext) marshalOInt2ᚖint(ctx context.Context, sel ast.Sele
 		return graphql.Null
 	}
 	return ec.marshalOInt2int(ctx, sel, *v)
+}
+
+func (ec *executionContext) unmarshalOObjectSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx context.Context, v interface{}) (ObjectSortType, error) {
+	var res ObjectSortType
+	return res, res.UnmarshalGQL(v)
+}
+
+func (ec *executionContext) marshalOObjectSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx context.Context, sel ast.SelectionSet, v ObjectSortType) graphql.Marshaler {
+	return v
+}
+
+func (ec *executionContext) unmarshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx context.Context, v interface{}) (*ObjectSortType, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := ec.unmarshalOObjectSortType2githubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx, v)
+	return &res, err
+}
+
+func (ec *executionContext) marshalOObjectSortType2ᚖgithubᚗcomᚋnovacloudczᚋgraphqlᚑormᚑchangelogᚋgenᚐObjectSortType(ctx context.Context, sel ast.SelectionSet, v *ObjectSortType) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return v
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {

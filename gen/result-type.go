@@ -4,7 +4,6 @@ import (
 	"context"
 	"strings"
 
-	"github.com/iancoleman/strcase"
 	"github.com/vektah/gqlparser/ast"
 
 	"github.com/jinzhu/gorm"
@@ -25,7 +24,7 @@ type EntityFilterQuery interface {
 	Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error
 }
 type EntitySort interface {
-	String() string
+	Apply(ctx context.Context, dialect gorm.Dialect, sorts *[]string, joins *[]string) error
 }
 
 type EntityResultType struct {
@@ -56,23 +55,18 @@ func (r *EntityResultType) GetItems(ctx context.Context, db *gorm.DB, opts GetIt
 
 	dialect := q.Dialect()
 
-	for _, s := range r.Sort {
-		direction := "ASC"
-		_s := s.String()
-		if strings.HasSuffix(_s, "_DESC") {
-			direction = "DESC"
-		}
-		col := strcase.ToLowerCamel(strings.ToLower(strings.TrimSuffix(_s, "_"+direction)))
-		q = q.Order(dialect.Quote(col) + " " + direction)
-	}
-
 	wheres := []string{}
 	values := []interface{}{}
 	joins := []string{}
+	sorts := []string{}
 
 	err := r.Query.Apply(ctx, dialect, r.SelectionSet, &wheres, &values, &joins)
 	if err != nil {
 		return err
+	}
+
+	for _, sort := range r.Sort {
+		sort.Apply(ctx, dialect, &sorts, &joins)
 	}
 
 	if r.Filter != nil {
@@ -82,6 +76,9 @@ func (r *EntityResultType) GetItems(ctx context.Context, db *gorm.DB, opts GetIt
 		}
 	}
 
+	if len(sorts) > 0 {
+		q = q.Order(strings.Join(sorts, ", "))
+	}
 	if len(wheres) > 0 {
 		q = q.Where(strings.Join(wheres, " AND "), values...)
 	}

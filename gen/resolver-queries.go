@@ -60,11 +60,11 @@ type QueryChangelogChangesHandlerOptions struct {
 	Offset *int
 	Limit  *int
 	Q      *string
-	Sort   []ChangelogChangeSortType
+	Sort   []*ChangelogChangeSortType
 	Filter *ChangelogChangeFilterType
 }
 
-func (r *GeneratedQueryResolver) ChangelogChanges(ctx context.Context, offset *int, limit *int, q *string, sort []ChangelogChangeSortType, filter *ChangelogChangeFilterType) (*ChangelogChangeResultType, error) {
+func (r *GeneratedQueryResolver) ChangelogChanges(ctx context.Context, offset *int, limit *int, q *string, sort []*ChangelogChangeSortType, filter *ChangelogChangeFilterType) (*ChangelogChangeResultType, error) {
 	opts := QueryChangelogChangesHandlerOptions{
 		Offset: offset,
 		Limit:  limit,
@@ -75,10 +75,6 @@ func (r *GeneratedQueryResolver) ChangelogChanges(ctx context.Context, offset *i
 	return r.Handlers.QueryChangelogChanges(ctx, r.GeneratedResolver, opts)
 }
 func QueryChangelogChangesHandler(ctx context.Context, r *GeneratedResolver, opts QueryChangelogChangesHandlerOptions) (*ChangelogChangeResultType, error) {
-	_sort := []EntitySort{}
-	for _, s := range opts.Sort {
-		_sort = append(_sort, s)
-	}
 	query := ChangelogChangeQueryFilter{opts.Q}
 
 	var selectionSet *ast.SelectionSet
@@ -86,6 +82,11 @@ func QueryChangelogChangesHandler(ctx context.Context, r *GeneratedResolver, opt
 		if f.Field.Name == "items" {
 			selectionSet = &f.Field.SelectionSet
 		}
+	}
+
+	_sort := []EntitySort{}
+	for _, sort := range opts.Sort {
+		_sort = append(_sort, sort)
 	}
 
 	return &ChangelogChangeResultType{
@@ -108,6 +109,7 @@ func (r *GeneratedChangelogChangeResultTypeResolver) Items(ctx context.Context, 
 		Preloaders: []string{},
 	}
 	err = obj.GetItems(ctx, r.DB.db, giOpts, &items)
+
 	return
 }
 
@@ -185,11 +187,11 @@ type QueryChangelogsHandlerOptions struct {
 	Offset *int
 	Limit  *int
 	Q      *string
-	Sort   []ChangelogSortType
+	Sort   []*ChangelogSortType
 	Filter *ChangelogFilterType
 }
 
-func (r *GeneratedQueryResolver) Changelogs(ctx context.Context, offset *int, limit *int, q *string, sort []ChangelogSortType, filter *ChangelogFilterType) (*ChangelogResultType, error) {
+func (r *GeneratedQueryResolver) Changelogs(ctx context.Context, offset *int, limit *int, q *string, sort []*ChangelogSortType, filter *ChangelogFilterType) (*ChangelogResultType, error) {
 	opts := QueryChangelogsHandlerOptions{
 		Offset: offset,
 		Limit:  limit,
@@ -200,10 +202,6 @@ func (r *GeneratedQueryResolver) Changelogs(ctx context.Context, offset *int, li
 	return r.Handlers.QueryChangelogs(ctx, r.GeneratedResolver, opts)
 }
 func QueryChangelogsHandler(ctx context.Context, r *GeneratedResolver, opts QueryChangelogsHandlerOptions) (*ChangelogResultType, error) {
-	_sort := []EntitySort{}
-	for _, s := range opts.Sort {
-		_sort = append(_sort, s)
-	}
 	query := ChangelogQueryFilter{opts.Q}
 
 	var selectionSet *ast.SelectionSet
@@ -211,6 +209,11 @@ func QueryChangelogsHandler(ctx context.Context, r *GeneratedResolver, opts Quer
 		if f.Field.Name == "items" {
 			selectionSet = &f.Field.SelectionSet
 		}
+	}
+
+	_sort := []EntitySort{}
+	for _, sort := range opts.Sort {
+		_sort = append(_sort, sort)
 	}
 
 	return &ChangelogResultType{
@@ -235,6 +238,12 @@ func (r *GeneratedChangelogResultTypeResolver) Items(ctx context.Context, obj *C
 		},
 	}
 	err = obj.GetItems(ctx, r.DB.db, giOpts, &items)
+
+	for _, item := range items {
+
+		item.ChangesPreloaded = true
+	}
+
 	return
 }
 
@@ -249,7 +258,15 @@ func (r *GeneratedChangelogResolver) Changes(ctx context.Context, obj *Changelog
 }
 func ChangelogChangesHandler(ctx context.Context, r *GeneratedChangelogResolver, obj *Changelog) (res []*ChangelogChange, err error) {
 
-	res = obj.Changes
+	if obj.ChangesPreloaded {
+		res = obj.Changes
+	} else {
+
+		items := []*ChangelogChange{}
+		err = r.DB.Query().Model(obj).Related(&items, "Changes").Error
+		res = items
+
+	}
 
 	return
 }
