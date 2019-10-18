@@ -77,7 +77,7 @@ func storeEvent(tx *gorm.DB, event *events.Event) error {
 	}
 	log.Changes = changes
 
-	if err := tx.Model(log).Association("changes").Replace(changes).Error; err != nil {
+	if err := tx.Model(log).Association("changes").Append(changes).Error; err != nil {
 		return err
 	}
 
