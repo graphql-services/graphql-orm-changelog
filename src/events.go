@@ -69,6 +69,7 @@ func storeEvent(tx *gorm.DB, event *events.Event) error {
 			Column:   ch.Name,
 			OldValue: oldValue,
 			NewValue: newValue,
+			LogID:    &event.ID,
 		}
 		if err := tx.Create(change).Error; err != nil {
 			return err
@@ -76,10 +77,6 @@ func storeEvent(tx *gorm.DB, event *events.Event) error {
 		changes = append(changes, change)
 	}
 	log.Changes = changes
-
-	if err := tx.Model(log).Association("changes").Append(changes).Error; err != nil {
-		return err
-	}
 
 	return nil
 }
