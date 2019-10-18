@@ -66,7 +66,7 @@ type Changelog struct {
 	CreatedBy   *string       `json:"createdBy" gorm:"column:createdBy"`
 
 	Changes          []*ChangelogChange `json:"changes" gorm:"foreignkey:LogID"`
-	ChangesPreloaded bool               `gorm="-"`
+	ChangesPreloaded bool               `gorm:"-"`
 }
 
 func (m *Changelog) Is_Entity() {}
