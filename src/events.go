@@ -18,7 +18,6 @@ import (
 func CloudEventsReceive(db *gen.DB) func(event cloudevents.Event) error {
 
 	return func(event cloudevents.Event) (err error) {
-		log.Println("new event")
 		ormEvent := &events.Event{}
 		err = event.DataAs(ormEvent)
 		if err != nil {
