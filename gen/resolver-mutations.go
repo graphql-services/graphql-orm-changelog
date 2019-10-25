@@ -254,7 +254,7 @@ func CreateChangelogHandler(ctx context.Context, r *GeneratedResolver, input map
 		return
 	}
 
-	if ids, ok := input["changesIds"].([]interface{}); ok {
+	if ids, exists := input["changesIds"]; exists {
 		items := []ChangelogChange{}
 		tx.Find(&items, "id IN (?)", ids)
 		association := tx.Model(&item).Association("Changes")
@@ -339,7 +339,7 @@ func UpdateChangelogHandler(ctx context.Context, r *GeneratedResolver, id string
 		return
 	}
 
-	if ids, ok := input["changesIds"].([]interface{}); ok {
+	if ids, exists := input["changesIds"]; exists {
 		items := []ChangelogChange{}
 		tx.Find(&items, "id IN (?)", ids)
 		association := tx.Model(&item).Association("Changes")

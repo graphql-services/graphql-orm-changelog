@@ -106,6 +106,7 @@ input ChangelogChangeFilterType {
   id_gte: ID
   id_lte: ID
   id_in: [ID!]
+  id_null: Boolean
   column: String
   column_ne: String
   column_gt: String
@@ -116,6 +117,7 @@ input ChangelogChangeFilterType {
   column_like: String
   column_prefix: String
   column_suffix: String
+  column_null: Boolean
   oldValue: String
   oldValue_ne: String
   oldValue_gt: String
@@ -126,6 +128,7 @@ input ChangelogChangeFilterType {
   oldValue_like: String
   oldValue_prefix: String
   oldValue_suffix: String
+  oldValue_null: Boolean
   newValue: String
   newValue_ne: String
   newValue_gt: String
@@ -136,6 +139,7 @@ input ChangelogChangeFilterType {
   newValue_like: String
   newValue_prefix: String
   newValue_suffix: String
+  newValue_null: Boolean
   logId: ID
   logId_ne: ID
   logId_gt: ID
@@ -143,6 +147,7 @@ input ChangelogChangeFilterType {
   logId_gte: ID
   logId_lte: ID
   logId_in: [ID!]
+  logId_null: Boolean
   updatedAt: Time
   updatedAt_ne: Time
   updatedAt_gt: Time
@@ -150,6 +155,7 @@ input ChangelogChangeFilterType {
   updatedAt_gte: Time
   updatedAt_lte: Time
   updatedAt_in: [Time!]
+  updatedAt_null: Boolean
   createdAt: Time
   createdAt_ne: Time
   createdAt_gt: Time
@@ -157,6 +163,7 @@ input ChangelogChangeFilterType {
   createdAt_gte: Time
   createdAt_lte: Time
   createdAt_in: [Time!]
+  createdAt_null: Boolean
   updatedBy: ID
   updatedBy_ne: ID
   updatedBy_gt: ID
@@ -164,6 +171,7 @@ input ChangelogChangeFilterType {
   updatedBy_gte: ID
   updatedBy_lte: ID
   updatedBy_in: [ID!]
+  updatedBy_null: Boolean
   createdBy: ID
   createdBy_ne: ID
   createdBy_gt: ID
@@ -171,6 +179,7 @@ input ChangelogChangeFilterType {
   createdBy_gte: ID
   createdBy_lte: ID
   createdBy_in: [ID!]
+  createdBy_null: Boolean
   log: ChangelogFilterType
 }
 
@@ -223,6 +232,7 @@ input ChangelogFilterType {
   id_gte: ID
   id_lte: ID
   id_in: [ID!]
+  id_null: Boolean
   entity: String
   entity_ne: String
   entity_gt: String
@@ -233,6 +243,7 @@ input ChangelogFilterType {
   entity_like: String
   entity_prefix: String
   entity_suffix: String
+  entity_null: Boolean
   entityID: String
   entityID_ne: String
   entityID_gt: String
@@ -243,6 +254,7 @@ input ChangelogFilterType {
   entityID_like: String
   entityID_prefix: String
   entityID_suffix: String
+  entityID_null: Boolean
   principalID: String
   principalID_ne: String
   principalID_gt: String
@@ -253,6 +265,7 @@ input ChangelogFilterType {
   principalID_like: String
   principalID_prefix: String
   principalID_suffix: String
+  principalID_null: Boolean
   type: ChangelogType
   type_ne: ChangelogType
   type_gt: ChangelogType
@@ -260,6 +273,7 @@ input ChangelogFilterType {
   type_gte: ChangelogType
   type_lte: ChangelogType
   type_in: [ChangelogType!]
+  type_null: Boolean
   date: Time
   date_ne: Time
   date_gt: Time
@@ -267,6 +281,7 @@ input ChangelogFilterType {
   date_gte: Time
   date_lte: Time
   date_in: [Time!]
+  date_null: Boolean
   updatedAt: Time
   updatedAt_ne: Time
   updatedAt_gt: Time
@@ -274,6 +289,7 @@ input ChangelogFilterType {
   updatedAt_gte: Time
   updatedAt_lte: Time
   updatedAt_in: [Time!]
+  updatedAt_null: Boolean
   createdAt: Time
   createdAt_ne: Time
   createdAt_gt: Time
@@ -281,6 +297,7 @@ input ChangelogFilterType {
   createdAt_gte: Time
   createdAt_lte: Time
   createdAt_in: [Time!]
+  createdAt_null: Boolean
   updatedBy: ID
   updatedBy_ne: ID
   updatedBy_gt: ID
@@ -288,6 +305,7 @@ input ChangelogFilterType {
   updatedBy_gte: ID
   updatedBy_lte: ID
   updatedBy_in: [ID!]
+  updatedBy_null: Boolean
   createdBy: ID
   createdBy_ne: ID
   createdBy_gt: ID
@@ -295,6 +313,7 @@ input ChangelogFilterType {
   createdBy_gte: ID
   createdBy_lte: ID
   createdBy_in: [ID!]
+  createdBy_null: Boolean
   changes: ChangelogChangeFilterType
 }
 

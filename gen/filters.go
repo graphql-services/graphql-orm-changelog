@@ -84,297 +84,432 @@ func (f *ChangelogChangeFilterType) WhereContent(dialect gorm.Dialect, aliasPref
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" = ?")
 		values = append(values, f.ID)
 	}
+
 	if f.IDNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" != ?")
 		values = append(values, f.IDNe)
 	}
+
 	if f.IDGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" > ?")
 		values = append(values, f.IDGt)
 	}
+
 	if f.IDLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" < ?")
 		values = append(values, f.IDLt)
 	}
+
 	if f.IDGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" >= ?")
 		values = append(values, f.IDGte)
 	}
+
 	if f.IDLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" <= ?")
 		values = append(values, f.IDLte)
 	}
+
 	if f.IDIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IN (?)")
 		values = append(values, f.IDIn)
+	}
+
+	if f.IDNull != nil {
+		if *f.IDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NOT NULL")
+		}
 	}
 
 	if f.Column != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" = ?")
 		values = append(values, f.Column)
 	}
+
 	if f.ColumnNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" != ?")
 		values = append(values, f.ColumnNe)
 	}
+
 	if f.ColumnGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" > ?")
 		values = append(values, f.ColumnGt)
 	}
+
 	if f.ColumnLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" < ?")
 		values = append(values, f.ColumnLt)
 	}
+
 	if f.ColumnGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" >= ?")
 		values = append(values, f.ColumnGte)
 	}
+
 	if f.ColumnLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" <= ?")
 		values = append(values, f.ColumnLte)
 	}
+
 	if f.ColumnIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" IN (?)")
 		values = append(values, f.ColumnIn)
 	}
+
 	if f.ColumnLike != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" LIKE ?")
 		values = append(values, strings.Replace(strings.Replace(*f.ColumnLike, "?", "_", -1), "*", "%", -1))
 	}
+
 	if f.ColumnPrefix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%s%%", *f.ColumnPrefix))
 	}
+
 	if f.ColumnSuffix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%%%s", *f.ColumnSuffix))
+	}
+
+	if f.ColumnNull != nil {
+		if *f.ColumnNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("column")+" IS NOT NULL")
+		}
 	}
 
 	if f.OldValue != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" = ?")
 		values = append(values, f.OldValue)
 	}
+
 	if f.OldValueNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" != ?")
 		values = append(values, f.OldValueNe)
 	}
+
 	if f.OldValueGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" > ?")
 		values = append(values, f.OldValueGt)
 	}
+
 	if f.OldValueLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" < ?")
 		values = append(values, f.OldValueLt)
 	}
+
 	if f.OldValueGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" >= ?")
 		values = append(values, f.OldValueGte)
 	}
+
 	if f.OldValueLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" <= ?")
 		values = append(values, f.OldValueLte)
 	}
+
 	if f.OldValueIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" IN (?)")
 		values = append(values, f.OldValueIn)
 	}
+
 	if f.OldValueLike != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" LIKE ?")
 		values = append(values, strings.Replace(strings.Replace(*f.OldValueLike, "?", "_", -1), "*", "%", -1))
 	}
+
 	if f.OldValuePrefix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%s%%", *f.OldValuePrefix))
 	}
+
 	if f.OldValueSuffix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%%%s", *f.OldValueSuffix))
+	}
+
+	if f.OldValueNull != nil {
+		if *f.OldValueNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("oldValue")+" IS NOT NULL")
+		}
 	}
 
 	if f.NewValue != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" = ?")
 		values = append(values, f.NewValue)
 	}
+
 	if f.NewValueNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" != ?")
 		values = append(values, f.NewValueNe)
 	}
+
 	if f.NewValueGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" > ?")
 		values = append(values, f.NewValueGt)
 	}
+
 	if f.NewValueLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" < ?")
 		values = append(values, f.NewValueLt)
 	}
+
 	if f.NewValueGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" >= ?")
 		values = append(values, f.NewValueGte)
 	}
+
 	if f.NewValueLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" <= ?")
 		values = append(values, f.NewValueLte)
 	}
+
 	if f.NewValueIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" IN (?)")
 		values = append(values, f.NewValueIn)
 	}
+
 	if f.NewValueLike != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" LIKE ?")
 		values = append(values, strings.Replace(strings.Replace(*f.NewValueLike, "?", "_", -1), "*", "%", -1))
 	}
+
 	if f.NewValuePrefix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%s%%", *f.NewValuePrefix))
 	}
+
 	if f.NewValueSuffix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%%%s", *f.NewValueSuffix))
+	}
+
+	if f.NewValueNull != nil {
+		if *f.NewValueNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("newValue")+" IS NOT NULL")
+		}
 	}
 
 	if f.LogID != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("logId")+" = ?")
 		values = append(values, f.LogID)
 	}
+
 	if f.LogIDNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("logId")+" != ?")
 		values = append(values, f.LogIDNe)
 	}
+
 	if f.LogIDGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("logId")+" > ?")
 		values = append(values, f.LogIDGt)
 	}
+
 	if f.LogIDLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("logId")+" < ?")
 		values = append(values, f.LogIDLt)
 	}
+
 	if f.LogIDGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("logId")+" >= ?")
 		values = append(values, f.LogIDGte)
 	}
+
 	if f.LogIDLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("logId")+" <= ?")
 		values = append(values, f.LogIDLte)
 	}
+
 	if f.LogIDIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("logId")+" IN (?)")
 		values = append(values, f.LogIDIn)
+	}
+
+	if f.LogIDNull != nil {
+		if *f.LogIDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("logId")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("logId")+" IS NOT NULL")
+		}
 	}
 
 	if f.UpdatedAt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" = ?")
 		values = append(values, f.UpdatedAt)
 	}
+
 	if f.UpdatedAtNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" != ?")
 		values = append(values, f.UpdatedAtNe)
 	}
+
 	if f.UpdatedAtGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" > ?")
 		values = append(values, f.UpdatedAtGt)
 	}
+
 	if f.UpdatedAtLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" < ?")
 		values = append(values, f.UpdatedAtLt)
 	}
+
 	if f.UpdatedAtGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" >= ?")
 		values = append(values, f.UpdatedAtGte)
 	}
+
 	if f.UpdatedAtLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" <= ?")
 		values = append(values, f.UpdatedAtLte)
 	}
+
 	if f.UpdatedAtIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IN (?)")
 		values = append(values, f.UpdatedAtIn)
+	}
+
+	if f.UpdatedAtNull != nil {
+		if *f.UpdatedAtNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NOT NULL")
+		}
 	}
 
 	if f.CreatedAt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" = ?")
 		values = append(values, f.CreatedAt)
 	}
+
 	if f.CreatedAtNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" != ?")
 		values = append(values, f.CreatedAtNe)
 	}
+
 	if f.CreatedAtGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" > ?")
 		values = append(values, f.CreatedAtGt)
 	}
+
 	if f.CreatedAtLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" < ?")
 		values = append(values, f.CreatedAtLt)
 	}
+
 	if f.CreatedAtGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" >= ?")
 		values = append(values, f.CreatedAtGte)
 	}
+
 	if f.CreatedAtLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" <= ?")
 		values = append(values, f.CreatedAtLte)
 	}
+
 	if f.CreatedAtIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IN (?)")
 		values = append(values, f.CreatedAtIn)
+	}
+
+	if f.CreatedAtNull != nil {
+		if *f.CreatedAtNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NOT NULL")
+		}
 	}
 
 	if f.UpdatedBy != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" = ?")
 		values = append(values, f.UpdatedBy)
 	}
+
 	if f.UpdatedByNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" != ?")
 		values = append(values, f.UpdatedByNe)
 	}
+
 	if f.UpdatedByGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" > ?")
 		values = append(values, f.UpdatedByGt)
 	}
+
 	if f.UpdatedByLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" < ?")
 		values = append(values, f.UpdatedByLt)
 	}
+
 	if f.UpdatedByGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" >= ?")
 		values = append(values, f.UpdatedByGte)
 	}
+
 	if f.UpdatedByLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" <= ?")
 		values = append(values, f.UpdatedByLte)
 	}
+
 	if f.UpdatedByIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IN (?)")
 		values = append(values, f.UpdatedByIn)
+	}
+
+	if f.UpdatedByNull != nil {
+		if *f.UpdatedByNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NOT NULL")
+		}
 	}
 
 	if f.CreatedBy != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" = ?")
 		values = append(values, f.CreatedBy)
 	}
+
 	if f.CreatedByNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" != ?")
 		values = append(values, f.CreatedByNe)
 	}
+
 	if f.CreatedByGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" > ?")
 		values = append(values, f.CreatedByGt)
 	}
+
 	if f.CreatedByLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" < ?")
 		values = append(values, f.CreatedByLt)
 	}
+
 	if f.CreatedByGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" >= ?")
 		values = append(values, f.CreatedByGte)
 	}
+
 	if f.CreatedByLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" <= ?")
 		values = append(values, f.CreatedByLte)
 	}
+
 	if f.CreatedByIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IN (?)")
 		values = append(values, f.CreatedByIn)
+	}
+
+	if f.CreatedByNull != nil {
+		if *f.CreatedByNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NOT NULL")
+		}
 	}
 
 	return
@@ -488,326 +623,475 @@ func (f *ChangelogFilterType) WhereContent(dialect gorm.Dialect, aliasPrefix str
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" = ?")
 		values = append(values, f.ID)
 	}
+
 	if f.IDNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" != ?")
 		values = append(values, f.IDNe)
 	}
+
 	if f.IDGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" > ?")
 		values = append(values, f.IDGt)
 	}
+
 	if f.IDLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" < ?")
 		values = append(values, f.IDLt)
 	}
+
 	if f.IDGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" >= ?")
 		values = append(values, f.IDGte)
 	}
+
 	if f.IDLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" <= ?")
 		values = append(values, f.IDLte)
 	}
+
 	if f.IDIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IN (?)")
 		values = append(values, f.IDIn)
+	}
+
+	if f.IDNull != nil {
+		if *f.IDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("id")+" IS NOT NULL")
+		}
 	}
 
 	if f.Entity != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" = ?")
 		values = append(values, f.Entity)
 	}
+
 	if f.EntityNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" != ?")
 		values = append(values, f.EntityNe)
 	}
+
 	if f.EntityGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" > ?")
 		values = append(values, f.EntityGt)
 	}
+
 	if f.EntityLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" < ?")
 		values = append(values, f.EntityLt)
 	}
+
 	if f.EntityGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" >= ?")
 		values = append(values, f.EntityGte)
 	}
+
 	if f.EntityLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" <= ?")
 		values = append(values, f.EntityLte)
 	}
+
 	if f.EntityIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" IN (?)")
 		values = append(values, f.EntityIn)
 	}
+
 	if f.EntityLike != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" LIKE ?")
 		values = append(values, strings.Replace(strings.Replace(*f.EntityLike, "?", "_", -1), "*", "%", -1))
 	}
+
 	if f.EntityPrefix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%s%%", *f.EntityPrefix))
 	}
+
 	if f.EntitySuffix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%%%s", *f.EntitySuffix))
+	}
+
+	if f.EntityNull != nil {
+		if *f.EntityNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("entity")+" IS NOT NULL")
+		}
 	}
 
 	if f.EntityID != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" = ?")
 		values = append(values, f.EntityID)
 	}
+
 	if f.EntityIDNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" != ?")
 		values = append(values, f.EntityIDNe)
 	}
+
 	if f.EntityIDGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" > ?")
 		values = append(values, f.EntityIDGt)
 	}
+
 	if f.EntityIDLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" < ?")
 		values = append(values, f.EntityIDLt)
 	}
+
 	if f.EntityIDGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" >= ?")
 		values = append(values, f.EntityIDGte)
 	}
+
 	if f.EntityIDLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" <= ?")
 		values = append(values, f.EntityIDLte)
 	}
+
 	if f.EntityIDIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" IN (?)")
 		values = append(values, f.EntityIDIn)
 	}
+
 	if f.EntityIDLike != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" LIKE ?")
 		values = append(values, strings.Replace(strings.Replace(*f.EntityIDLike, "?", "_", -1), "*", "%", -1))
 	}
+
 	if f.EntityIDPrefix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%s%%", *f.EntityIDPrefix))
 	}
+
 	if f.EntityIDSuffix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%%%s", *f.EntityIDSuffix))
+	}
+
+	if f.EntityIDNull != nil {
+		if *f.EntityIDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("entityID")+" IS NOT NULL")
+		}
 	}
 
 	if f.PrincipalID != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" = ?")
 		values = append(values, f.PrincipalID)
 	}
+
 	if f.PrincipalIDNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" != ?")
 		values = append(values, f.PrincipalIDNe)
 	}
+
 	if f.PrincipalIDGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" > ?")
 		values = append(values, f.PrincipalIDGt)
 	}
+
 	if f.PrincipalIDLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" < ?")
 		values = append(values, f.PrincipalIDLt)
 	}
+
 	if f.PrincipalIDGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" >= ?")
 		values = append(values, f.PrincipalIDGte)
 	}
+
 	if f.PrincipalIDLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" <= ?")
 		values = append(values, f.PrincipalIDLte)
 	}
+
 	if f.PrincipalIDIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" IN (?)")
 		values = append(values, f.PrincipalIDIn)
 	}
+
 	if f.PrincipalIDLike != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" LIKE ?")
 		values = append(values, strings.Replace(strings.Replace(*f.PrincipalIDLike, "?", "_", -1), "*", "%", -1))
 	}
+
 	if f.PrincipalIDPrefix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%s%%", *f.PrincipalIDPrefix))
 	}
+
 	if f.PrincipalIDSuffix != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" LIKE ?")
 		values = append(values, fmt.Sprintf("%%%s", *f.PrincipalIDSuffix))
+	}
+
+	if f.PrincipalIDNull != nil {
+		if *f.PrincipalIDNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("principalID")+" IS NOT NULL")
+		}
 	}
 
 	if f.Type != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" = ?")
 		values = append(values, f.Type)
 	}
+
 	if f.TypeNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" != ?")
 		values = append(values, f.TypeNe)
 	}
+
 	if f.TypeGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" > ?")
 		values = append(values, f.TypeGt)
 	}
+
 	if f.TypeLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" < ?")
 		values = append(values, f.TypeLt)
 	}
+
 	if f.TypeGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" >= ?")
 		values = append(values, f.TypeGte)
 	}
+
 	if f.TypeLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" <= ?")
 		values = append(values, f.TypeLte)
 	}
+
 	if f.TypeIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" IN (?)")
 		values = append(values, f.TypeIn)
+	}
+
+	if f.TypeNull != nil {
+		if *f.TypeNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("type")+" IS NOT NULL")
+		}
 	}
 
 	if f.Date != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("date")+" = ?")
 		values = append(values, f.Date)
 	}
+
 	if f.DateNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("date")+" != ?")
 		values = append(values, f.DateNe)
 	}
+
 	if f.DateGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("date")+" > ?")
 		values = append(values, f.DateGt)
 	}
+
 	if f.DateLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("date")+" < ?")
 		values = append(values, f.DateLt)
 	}
+
 	if f.DateGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("date")+" >= ?")
 		values = append(values, f.DateGte)
 	}
+
 	if f.DateLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("date")+" <= ?")
 		values = append(values, f.DateLte)
 	}
+
 	if f.DateIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("date")+" IN (?)")
 		values = append(values, f.DateIn)
+	}
+
+	if f.DateNull != nil {
+		if *f.DateNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("date")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("date")+" IS NOT NULL")
+		}
 	}
 
 	if f.UpdatedAt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" = ?")
 		values = append(values, f.UpdatedAt)
 	}
+
 	if f.UpdatedAtNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" != ?")
 		values = append(values, f.UpdatedAtNe)
 	}
+
 	if f.UpdatedAtGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" > ?")
 		values = append(values, f.UpdatedAtGt)
 	}
+
 	if f.UpdatedAtLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" < ?")
 		values = append(values, f.UpdatedAtLt)
 	}
+
 	if f.UpdatedAtGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" >= ?")
 		values = append(values, f.UpdatedAtGte)
 	}
+
 	if f.UpdatedAtLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" <= ?")
 		values = append(values, f.UpdatedAtLte)
 	}
+
 	if f.UpdatedAtIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IN (?)")
 		values = append(values, f.UpdatedAtIn)
+	}
+
+	if f.UpdatedAtNull != nil {
+		if *f.UpdatedAtNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedAt")+" IS NOT NULL")
+		}
 	}
 
 	if f.CreatedAt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" = ?")
 		values = append(values, f.CreatedAt)
 	}
+
 	if f.CreatedAtNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" != ?")
 		values = append(values, f.CreatedAtNe)
 	}
+
 	if f.CreatedAtGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" > ?")
 		values = append(values, f.CreatedAtGt)
 	}
+
 	if f.CreatedAtLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" < ?")
 		values = append(values, f.CreatedAtLt)
 	}
+
 	if f.CreatedAtGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" >= ?")
 		values = append(values, f.CreatedAtGte)
 	}
+
 	if f.CreatedAtLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" <= ?")
 		values = append(values, f.CreatedAtLte)
 	}
+
 	if f.CreatedAtIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IN (?)")
 		values = append(values, f.CreatedAtIn)
+	}
+
+	if f.CreatedAtNull != nil {
+		if *f.CreatedAtNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("createdAt")+" IS NOT NULL")
+		}
 	}
 
 	if f.UpdatedBy != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" = ?")
 		values = append(values, f.UpdatedBy)
 	}
+
 	if f.UpdatedByNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" != ?")
 		values = append(values, f.UpdatedByNe)
 	}
+
 	if f.UpdatedByGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" > ?")
 		values = append(values, f.UpdatedByGt)
 	}
+
 	if f.UpdatedByLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" < ?")
 		values = append(values, f.UpdatedByLt)
 	}
+
 	if f.UpdatedByGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" >= ?")
 		values = append(values, f.UpdatedByGte)
 	}
+
 	if f.UpdatedByLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" <= ?")
 		values = append(values, f.UpdatedByLte)
 	}
+
 	if f.UpdatedByIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IN (?)")
 		values = append(values, f.UpdatedByIn)
+	}
+
+	if f.UpdatedByNull != nil {
+		if *f.UpdatedByNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("updatedBy")+" IS NOT NULL")
+		}
 	}
 
 	if f.CreatedBy != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" = ?")
 		values = append(values, f.CreatedBy)
 	}
+
 	if f.CreatedByNe != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" != ?")
 		values = append(values, f.CreatedByNe)
 	}
+
 	if f.CreatedByGt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" > ?")
 		values = append(values, f.CreatedByGt)
 	}
+
 	if f.CreatedByLt != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" < ?")
 		values = append(values, f.CreatedByLt)
 	}
+
 	if f.CreatedByGte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" >= ?")
 		values = append(values, f.CreatedByGte)
 	}
+
 	if f.CreatedByLte != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" <= ?")
 		values = append(values, f.CreatedByLte)
 	}
+
 	if f.CreatedByIn != nil {
 		conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IN (?)")
 		values = append(values, f.CreatedByIn)
+	}
+
+	if f.CreatedByNull != nil {
+		if *f.CreatedByNull {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NULL")
+		} else {
+			conditions = append(conditions, aliasPrefix+dialect.Quote("createdBy")+" IS NOT NULL")
+		}
 	}
 
 	return

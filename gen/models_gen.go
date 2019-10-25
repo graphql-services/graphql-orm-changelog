@@ -23,6 +23,7 @@ type ChangelogChangeFilterType struct {
 	IDGte          *string                      `json:"id_gte"`
 	IDLte          *string                      `json:"id_lte"`
 	IDIn           []string                     `json:"id_in"`
+	IDNull         *bool                        `json:"id_null"`
 	Column         *string                      `json:"column"`
 	ColumnNe       *string                      `json:"column_ne"`
 	ColumnGt       *string                      `json:"column_gt"`
@@ -33,6 +34,7 @@ type ChangelogChangeFilterType struct {
 	ColumnLike     *string                      `json:"column_like"`
 	ColumnPrefix   *string                      `json:"column_prefix"`
 	ColumnSuffix   *string                      `json:"column_suffix"`
+	ColumnNull     *bool                        `json:"column_null"`
 	OldValue       *string                      `json:"oldValue"`
 	OldValueNe     *string                      `json:"oldValue_ne"`
 	OldValueGt     *string                      `json:"oldValue_gt"`
@@ -43,6 +45,7 @@ type ChangelogChangeFilterType struct {
 	OldValueLike   *string                      `json:"oldValue_like"`
 	OldValuePrefix *string                      `json:"oldValue_prefix"`
 	OldValueSuffix *string                      `json:"oldValue_suffix"`
+	OldValueNull   *bool                        `json:"oldValue_null"`
 	NewValue       *string                      `json:"newValue"`
 	NewValueNe     *string                      `json:"newValue_ne"`
 	NewValueGt     *string                      `json:"newValue_gt"`
@@ -53,6 +56,7 @@ type ChangelogChangeFilterType struct {
 	NewValueLike   *string                      `json:"newValue_like"`
 	NewValuePrefix *string                      `json:"newValue_prefix"`
 	NewValueSuffix *string                      `json:"newValue_suffix"`
+	NewValueNull   *bool                        `json:"newValue_null"`
 	LogID          *string                      `json:"logId"`
 	LogIDNe        *string                      `json:"logId_ne"`
 	LogIDGt        *string                      `json:"logId_gt"`
@@ -60,6 +64,7 @@ type ChangelogChangeFilterType struct {
 	LogIDGte       *string                      `json:"logId_gte"`
 	LogIDLte       *string                      `json:"logId_lte"`
 	LogIDIn        []string                     `json:"logId_in"`
+	LogIDNull      *bool                        `json:"logId_null"`
 	UpdatedAt      *time.Time                   `json:"updatedAt"`
 	UpdatedAtNe    *time.Time                   `json:"updatedAt_ne"`
 	UpdatedAtGt    *time.Time                   `json:"updatedAt_gt"`
@@ -67,6 +72,7 @@ type ChangelogChangeFilterType struct {
 	UpdatedAtGte   *time.Time                   `json:"updatedAt_gte"`
 	UpdatedAtLte   *time.Time                   `json:"updatedAt_lte"`
 	UpdatedAtIn    []*time.Time                 `json:"updatedAt_in"`
+	UpdatedAtNull  *bool                        `json:"updatedAt_null"`
 	CreatedAt      *time.Time                   `json:"createdAt"`
 	CreatedAtNe    *time.Time                   `json:"createdAt_ne"`
 	CreatedAtGt    *time.Time                   `json:"createdAt_gt"`
@@ -74,6 +80,7 @@ type ChangelogChangeFilterType struct {
 	CreatedAtGte   *time.Time                   `json:"createdAt_gte"`
 	CreatedAtLte   *time.Time                   `json:"createdAt_lte"`
 	CreatedAtIn    []*time.Time                 `json:"createdAt_in"`
+	CreatedAtNull  *bool                        `json:"createdAt_null"`
 	UpdatedBy      *string                      `json:"updatedBy"`
 	UpdatedByNe    *string                      `json:"updatedBy_ne"`
 	UpdatedByGt    *string                      `json:"updatedBy_gt"`
@@ -81,6 +88,7 @@ type ChangelogChangeFilterType struct {
 	UpdatedByGte   *string                      `json:"updatedBy_gte"`
 	UpdatedByLte   *string                      `json:"updatedBy_lte"`
 	UpdatedByIn    []string                     `json:"updatedBy_in"`
+	UpdatedByNull  *bool                        `json:"updatedBy_null"`
 	CreatedBy      *string                      `json:"createdBy"`
 	CreatedByNe    *string                      `json:"createdBy_ne"`
 	CreatedByGt    *string                      `json:"createdBy_gt"`
@@ -88,6 +96,7 @@ type ChangelogChangeFilterType struct {
 	CreatedByGte   *string                      `json:"createdBy_gte"`
 	CreatedByLte   *string                      `json:"createdBy_lte"`
 	CreatedByIn    []string                     `json:"createdBy_in"`
+	CreatedByNull  *bool                        `json:"createdBy_null"`
 	Log            *ChangelogFilterType         `json:"log"`
 }
 
@@ -114,6 +123,7 @@ type ChangelogFilterType struct {
 	IDGte             *string                    `json:"id_gte"`
 	IDLte             *string                    `json:"id_lte"`
 	IDIn              []string                   `json:"id_in"`
+	IDNull            *bool                      `json:"id_null"`
 	Entity            *string                    `json:"entity"`
 	EntityNe          *string                    `json:"entity_ne"`
 	EntityGt          *string                    `json:"entity_gt"`
@@ -124,6 +134,7 @@ type ChangelogFilterType struct {
 	EntityLike        *string                    `json:"entity_like"`
 	EntityPrefix      *string                    `json:"entity_prefix"`
 	EntitySuffix      *string                    `json:"entity_suffix"`
+	EntityNull        *bool                      `json:"entity_null"`
 	EntityID          *string                    `json:"entityID"`
 	EntityIDNe        *string                    `json:"entityID_ne"`
 	EntityIDGt        *string                    `json:"entityID_gt"`
@@ -134,6 +145,7 @@ type ChangelogFilterType struct {
 	EntityIDLike      *string                    `json:"entityID_like"`
 	EntityIDPrefix    *string                    `json:"entityID_prefix"`
 	EntityIDSuffix    *string                    `json:"entityID_suffix"`
+	EntityIDNull      *bool                      `json:"entityID_null"`
 	PrincipalID       *string                    `json:"principalID"`
 	PrincipalIDNe     *string                    `json:"principalID_ne"`
 	PrincipalIDGt     *string                    `json:"principalID_gt"`
@@ -144,6 +156,7 @@ type ChangelogFilterType struct {
 	PrincipalIDLike   *string                    `json:"principalID_like"`
 	PrincipalIDPrefix *string                    `json:"principalID_prefix"`
 	PrincipalIDSuffix *string                    `json:"principalID_suffix"`
+	PrincipalIDNull   *bool                      `json:"principalID_null"`
 	Type              *ChangelogType             `json:"type"`
 	TypeNe            *ChangelogType             `json:"type_ne"`
 	TypeGt            *ChangelogType             `json:"type_gt"`
@@ -151,6 +164,7 @@ type ChangelogFilterType struct {
 	TypeGte           *ChangelogType             `json:"type_gte"`
 	TypeLte           *ChangelogType             `json:"type_lte"`
 	TypeIn            []ChangelogType            `json:"type_in"`
+	TypeNull          *bool                      `json:"type_null"`
 	Date              *time.Time                 `json:"date"`
 	DateNe            *time.Time                 `json:"date_ne"`
 	DateGt            *time.Time                 `json:"date_gt"`
@@ -158,6 +172,7 @@ type ChangelogFilterType struct {
 	DateGte           *time.Time                 `json:"date_gte"`
 	DateLte           *time.Time                 `json:"date_lte"`
 	DateIn            []*time.Time               `json:"date_in"`
+	DateNull          *bool                      `json:"date_null"`
 	UpdatedAt         *time.Time                 `json:"updatedAt"`
 	UpdatedAtNe       *time.Time                 `json:"updatedAt_ne"`
 	UpdatedAtGt       *time.Time                 `json:"updatedAt_gt"`
@@ -165,6 +180,7 @@ type ChangelogFilterType struct {
 	UpdatedAtGte      *time.Time                 `json:"updatedAt_gte"`
 	UpdatedAtLte      *time.Time                 `json:"updatedAt_lte"`
 	UpdatedAtIn       []*time.Time               `json:"updatedAt_in"`
+	UpdatedAtNull     *bool                      `json:"updatedAt_null"`
 	CreatedAt         *time.Time                 `json:"createdAt"`
 	CreatedAtNe       *time.Time                 `json:"createdAt_ne"`
 	CreatedAtGt       *time.Time                 `json:"createdAt_gt"`
@@ -172,6 +188,7 @@ type ChangelogFilterType struct {
 	CreatedAtGte      *time.Time                 `json:"createdAt_gte"`
 	CreatedAtLte      *time.Time                 `json:"createdAt_lte"`
 	CreatedAtIn       []*time.Time               `json:"createdAt_in"`
+	CreatedAtNull     *bool                      `json:"createdAt_null"`
 	UpdatedBy         *string                    `json:"updatedBy"`
 	UpdatedByNe       *string                    `json:"updatedBy_ne"`
 	UpdatedByGt       *string                    `json:"updatedBy_gt"`
@@ -179,6 +196,7 @@ type ChangelogFilterType struct {
 	UpdatedByGte      *string                    `json:"updatedBy_gte"`
 	UpdatedByLte      *string                    `json:"updatedBy_lte"`
 	UpdatedByIn       []string                   `json:"updatedBy_in"`
+	UpdatedByNull     *bool                      `json:"updatedBy_null"`
 	CreatedBy         *string                    `json:"createdBy"`
 	CreatedByNe       *string                    `json:"createdBy_ne"`
 	CreatedByGt       *string                    `json:"createdBy_gt"`
@@ -186,6 +204,7 @@ type ChangelogFilterType struct {
 	CreatedByGte      *string                    `json:"createdBy_gte"`
 	CreatedByLte      *string                    `json:"createdBy_lte"`
 	CreatedByIn       []string                   `json:"createdBy_in"`
+	CreatedByNull     *bool                      `json:"createdBy_null"`
 	Changes           *ChangelogChangeFilterType `json:"changes"`
 }
 
