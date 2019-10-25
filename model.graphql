@@ -14,9 +14,9 @@ type ChangelogChange @entity {
 
 type Changelog @entity @key(fields: "id") {
   # Changed entity
-  entity: String! @column
+  entity: String! @column(index: "entity_search")
   # Changed entity ID
-  entityID: String! @column
+  entityID: String! @column(index: "entity_search")
   # Author of this change
   principalID: String @column
   # Type indicating create/update/delete change type

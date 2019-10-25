@@ -55,8 +55,8 @@ type ChangelogResultType struct {
 
 type Changelog struct {
 	ID          string        `json:"id" gorm:"column:id;primary_key"`
-	Entity      string        `json:"entity" gorm:"column:entity"`
-	EntityID    string        `json:"entityID" gorm:"column:entityID"`
+	Entity      string        `json:"entity" gorm:"column:entity;index:entity_search"`
+	EntityID    string        `json:"entityID" gorm:"column:entityID;index:entity_search"`
 	PrincipalID *string       `json:"principalID" gorm:"column:principalID"`
 	Type        ChangelogType `json:"type" gorm:"column:type"`
 	Date        time.Time     `json:"date" gorm:"column:date"`
