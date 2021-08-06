@@ -1,4 +1,4 @@
-OWNER=novacloud
+OWNER=graphql-services
 IMAGE_NAME=graphql-orm-changelog
 QNAME=$(OWNER)/$(IMAGE_NAME)
 
