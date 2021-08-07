@@ -34,6 +34,7 @@ func (r *GeneratedQueryResolver) _entities(ctx context.Context, representations 
 		}
 
 		switch typename {
+
 		case "Changelog":
 			ec := getExecutionContext(ctx)
 			f, _err := ec.unmarshalInputChangelogFilterType(ctx, anyValue)
@@ -42,22 +43,24 @@ func (r *GeneratedQueryResolver) _entities(ctx context.Context, representations 
 				return
 			}
 
-			if f.IsEmpty(ctx, r.DB.Query().Dialect()) {
+			if f.IsEmpty(ctx, r.GetDB(ctx).Dialect()) {
 				res = append(res, nil)
 				continue
 			}
 
-			item, qerr := r.Changelog(ctx, nil, nil, &f)
-			if qerr != nil {
-				if _, isNotFound := qerr.(*NotFoundError); !isNotFound {
-					err = qerr
-					return
-				}
+			item, _err := r.Changelog(ctx, nil, nil, &f)
+			if _err != nil {
+				err = _err
+				return
+			}
+			if item == nil {
+				// append nil object without reflected interface
 				res = append(res, nil)
 			} else {
 				res = append(res, item)
 			}
 			break
+
 		default:
 			err = fmt.Errorf("The _entities resolver tried to load an entity for type \"%s\", but no object type of that name was found in the schema", typename)
 			return

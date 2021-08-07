@@ -9,9 +9,8 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/novacloudcz/graphql-orm-changelog/gen"
-	"github.com/novacloudcz/graphql-orm-changelog/src"
-	"github.com/novacloudcz/graphql-orm/events"
+	"github.com/graphql-services/graphql-orm-changelog/gen"
+	"github.com/graphql-services/graphql-orm-changelog/src"
 	"github.com/rs/cors"
 	"github.com/urfave/cli"
 )
@@ -25,6 +24,7 @@ func main() {
 	app.Commands = []cli.Command{
 		startCmd,
 		migrateCmd,
+		automigrateCmd,
 	}
 
 	err := app.Run(os.Args)
@@ -60,9 +60,22 @@ var startCmd = cli.Command{
 
 var migrateCmd = cli.Command{
 	Name:  "migrate",
-	Usage: "migrate schema database",
+	Usage: "run migration sequence (using gomigrate)",
 	Action: func(ctx *cli.Context) error {
 		fmt.Println("starting migration")
+		if err := migrate(); err != nil {
+			return cli.NewExitError(err.Error(), 1)
+		}
+		fmt.Println("migration complete")
+		return nil
+	},
+}
+
+var automigrateCmd = cli.Command{
+	Name:  "automigrate",
+	Usage: "migrate schema database using basic gorm migration",
+	Action: func(ctx *cli.Context) error {
+		fmt.Println("starting automigration")
 		if err := automigrate(); err != nil {
 			return cli.NewExitError(err.Error(), 1)
 		}
@@ -74,7 +87,13 @@ var migrateCmd = cli.Command{
 func automigrate() error {
 	db := gen.NewDBFromEnvVars()
 	defer db.Close()
-	return db.AutoMigrate().Error
+	return db.AutoMigrate()
+}
+
+func migrate() error {
+	db := gen.NewDBFromEnvVars()
+	defer db.Close()
+	return db.Migrate(src.GetMigrations(db))
 }
 
 func startServer(enableCors bool, port string) error {
@@ -84,12 +103,12 @@ func startServer(enableCors bool, port string) error {
 	db := gen.NewDBFromEnvVars()
 	defer db.Close()
 
-	eventController, err := events.NewEventController()
+	eventController, err := gen.NewEventController()
 	if err != nil {
 		return err
 	}
 
-	mux := gen.GetHTTPServeMux(src.New(db, &eventController), db)
+	mux := gen.GetHTTPServeMux(src.New(db, &eventController), db, src.GetMigrations(db))
 
 	mux.HandleFunc("/healthcheck", func(res http.ResponseWriter, req *http.Request) {
 		if err := db.Ping(); err != nil {
@@ -115,27 +134,23 @@ func startServer(enableCors bool, port string) error {
 		log.Fatal(h.ListenAndServe())
 	}()
 
-	go func(){
-		src.StartCloudEventsServer(db)
-	}()
-
 	<-stop
 
 	log.Println("\nShutting down the server...")
 
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 
-	err = db.Close()
-	if err != nil {
-		return cli.NewExitError(err, 1)
-	}
-	log.Println("Database connection closed")
-
 	err = h.Shutdown(ctx)
 	if err != nil {
 		return cli.NewExitError(err, 1)
 	}
 	log.Println("Server gracefully stopped")
+
+	err = db.Close()
+	if err != nil {
+		return cli.NewExitError(err, 1)
+	}
+	log.Println("Database connection closed")
 
 	return nil
 }

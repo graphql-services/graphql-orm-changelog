@@ -9,18 +9,12 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-type NotFoundError struct {
-	Entity string
-}
-
-func (e *NotFoundError) Error() string {
-	return fmt.Sprintf("%s not found", e.Entity)
-}
-
+// ChangelogChangeResultType ...
 type ChangelogChangeResultType struct {
 	EntityResultType
 }
 
+// ChangelogChange ...
 type ChangelogChange struct {
 	ID        string     `json:"id" gorm:"column:id;primary_key"`
 	Column    string     `json:"column" gorm:"column:column"`
@@ -35,8 +29,10 @@ type ChangelogChange struct {
 	Log *Changelog `json:"log"`
 }
 
+// Is_Entity ...
 func (m *ChangelogChange) Is_Entity() {}
 
+// ChangelogChangeChanges ...
 type ChangelogChangeChanges struct {
 	ID        string
 	Column    string
@@ -49,10 +45,12 @@ type ChangelogChangeChanges struct {
 	CreatedBy *string
 }
 
+// ChangelogResultType ...
 type ChangelogResultType struct {
 	EntityResultType
 }
 
+// Changelog ...
 type Changelog struct {
 	ID          string        `json:"id" gorm:"column:id;primary_key"`
 	Entity      string        `json:"entity" gorm:"column:entity;index:entity_search"`
@@ -69,8 +67,10 @@ type Changelog struct {
 	ChangesPreloaded bool               `gorm:"-"`
 }
 
+// Is_Entity ...
 func (m *Changelog) Is_Entity() {}
 
+// ChangelogChanges ...
 type ChangelogChanges struct {
 	ID          string
 	Entity      string
@@ -86,7 +86,7 @@ type ChangelogChanges struct {
 	ChangesIDs []*string
 }
 
-// used to convert map[string]interface{} to EntityChanges struct
+// ApplyChanges used to convert map[string]interface{} to EntityChanges struct
 func ApplyChanges(changes map[string]interface{}, to interface{}) error {
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
 		ErrorUnused: true,

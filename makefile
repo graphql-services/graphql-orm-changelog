@@ -1,10 +1,10 @@
-OWNER=graphql-services
-IMAGE_NAME=graphql-orm-changelog
+OWNER=graphql
+IMAGE_NAME=orm-changelog
 QNAME=$(OWNER)/$(IMAGE_NAME)
 
 GIT_TAG=$(QNAME):$(GITHUB_SHA)
 BUILD_TAG=$(QNAME):$(GITHUB_RUN_ID).$(GITHUB_SHA)
-TAG=$(QNAME):`echo $(GITHUB_REF) | sed 's/refs\/heads\///' | sed 's/master/latest/;s/develop/unstable/'`
+TAG=$(QNAME):`echo $(GITHUB_REF) | sed 's/refs\/heads\///' | sed 's/refs\/tags\///' | sed 's/master/latest/;s/develop/unstable/'`
 
 lint:
 	docker run -it --rm -v "$(PWD)/Dockerfile:/Dockerfile:ro" redcoolbeans/dockerlint
@@ -15,9 +15,6 @@ build:
 	# CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/binary .
 	docker build -t $(GIT_TAG) .
 	
-blah:
-	echo $(GIT_TAG)
-
 tag:
 	docker tag $(GIT_TAG) $(BUILD_TAG)
 	docker tag $(GIT_TAG) $(TAG)
@@ -29,16 +26,31 @@ push: login
 	# docker push $(BUILD_TAG)
 	docker push $(TAG)
 
+generate:
+	GO111MODULE=on go run github.com/novacloudcz/graphql-orm
+
+reinit:
+	GO111MODULE=on go run github.com/novacloudcz/graphql-orm init
+
+migrate:
+	DATABASE_URL=sqlite3://test.db PORT=8080 go run *.go migrate
+
+automigrate:
+	DATABASE_URL=sqlite3://test.db PORT=8080 go run *.go automigrate
+
+run:
+	DATABASE_URL=sqlite3://test.db PORT=8080 go run *.go start --cors
+
+voyager:
+	docker run --rm -v `pwd`/gen/schema.graphql:/app/schema.graphql -p 8080:80 graphql/voyager
+
 build-lambda-function:
 	GO111MODULE=on GOOS=linux CGO_ENABLED=0 go build -o main lambda/main.go && zip lambda.zip main && rm main
 
-build-local:
-	go get ./...
-	go build -o $(IMAGE_NAME)
-
-deploy-local:
-	make build-local
-	mv $(IMAGE_NAME) /usr/local/bin/
-
-test:
-	PORT=8080 go run *.go start
+test-sqlite:
+	GO111MODULE=on go build -o app *.go && DATABASE_URL=sqlite3://test.db ./app migrate && (DATABASE_URL=sqlite3://test.db PORT=8080 ./app start& export app_pid=$$! && make test-godog || test_result=$$? && kill $$app_pid && exit $$test_result)
+test: 
+	GO111MODULE=on go build -o app *.go && DATABASE_URL=sqlite3://test.db ./app migrate && (DATABASE_URL=sqlite3://test.db PORT=8080 ./app start& export app_pid=$$! && make test-godog || test_result=$$? && kill $$app_pid && exit $$test_result)
+// TODO: add detection of host ip (eg. host.docker.internal) for other OS
+test-godog:
+	docker run --rm --network="host" -v "${PWD}/features:/godog/features" -e GRAPHQL_URL=http://$$(if [[ $${OSTYPE} == darwin* ]]; then echo host.docker.internal;else echo localhost;fi):8080/graphql jakubknejzlik/godog-graphql

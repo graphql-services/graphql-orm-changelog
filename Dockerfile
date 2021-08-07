@@ -1,7 +1,7 @@
 FROM golang as builder
 
 ENV GO111MODULE=on
-WORKDIR /go/src/github.com/novacloudcz/graphql-orm-changelog
+WORKDIR /go/src/github.com/graphql-services/graphql-orm-changelog
 
 COPY . .
 RUN GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /tmp/app *.go

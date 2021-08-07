@@ -16,12 +16,12 @@ resolver:
 models:
   
   ChangelogChange:
-    model: github.com/novacloudcz/graphql-orm-changelog/gen.ChangelogChange
+    model: github.com/graphql-services/graphql-orm-changelog/gen.ChangelogChange
     fields:
       log:
         resolver: true
   ChangelogChangeResultType:
-    model: github.com/novacloudcz/graphql-orm-changelog/gen.ChangelogChangeResultType
+    model: github.com/graphql-services/graphql-orm-changelog/gen.ChangelogChangeResultType
     fields:
       count:
         resolver: true
@@ -33,12 +33,12 @@ models:
     model: "map[string]interface{}"
   
   Changelog:
-    model: github.com/novacloudcz/graphql-orm-changelog/gen.Changelog
+    model: github.com/graphql-services/graphql-orm-changelog/gen.Changelog
     fields:
       changes:
         resolver: true
   ChangelogResultType:
-    model: github.com/novacloudcz/graphql-orm-changelog/gen.ChangelogResultType
+    model: github.com/graphql-services/graphql-orm-changelog/gen.ChangelogResultType
     fields:
       count:
         resolver: true
@@ -52,4 +52,4 @@ models:
   
   
   _Any:
-    model: github.com/novacloudcz/graphql-orm-changelog/gen._Any
+    model: github.com/graphql-services/graphql-orm-changelog/gen._Any

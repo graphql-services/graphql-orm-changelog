@@ -9,10 +9,12 @@ import (
 	"github.com/vektah/gqlparser/ast"
 )
 
+// ChangelogChangeQueryFilter ...
 type ChangelogChangeQueryFilter struct {
 	Query *string
 }
 
+// Apply ...
 func (qf *ChangelogChangeQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
 	if qf.Query == nil {
 		return nil
@@ -77,7 +79,7 @@ func (qf *ChangelogChangeQueryFilter) applyQueryWithFields(dialect gorm.Dialect,
 	if fs, ok := fieldsMap["log"]; ok {
 		_fields := []*ast.Field{}
 		_alias := alias + "_log"
-		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("changelogs"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+alias+"."+dialect.Quote("logId"))
+		*joins = append(*joins, "LEFT JOIN "+dialect.Quote(TableName("changelogs"))+" "+dialect.Quote(_alias)+" ON "+dialect.Quote(_alias)+".id = "+dialect.Quote(alias)+"."+dialect.Quote("logId"))
 
 		for _, f := range fs {
 			for _, s := range f.SelectionSet {
@@ -96,10 +98,12 @@ func (qf *ChangelogChangeQueryFilter) applyQueryWithFields(dialect gorm.Dialect,
 	return nil
 }
 
+// ChangelogQueryFilter ...
 type ChangelogQueryFilter struct {
 	Query *string
 }
 
+// Apply ...
 func (qf *ChangelogQueryFilter) Apply(ctx context.Context, dialect gorm.Dialect, selectionSet *ast.SelectionSet, wheres *[]string, values *[]interface{}, joins *[]string) error {
 	if qf.Query == nil {
 		return nil
