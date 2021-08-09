@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/99designs/gqlgen/handler"
-	jwtgo "github.com/dgrijalva/jwt-go"
+	jwtgo "github.com/golang-jwt/jwt"
 	"gopkg.in/gormigrate.v1"
 )
 
