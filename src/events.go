@@ -15,7 +15,6 @@ import (
 )
 
 func CloudEventsReceive(db *gen.DB) func(event cloudevents.Event) error {
-
 	return func(event cloudevents.Event) (err error) {
 		ormEvent := &events.Event{}
 		err = event.DataAs(ormEvent)
@@ -57,11 +56,11 @@ func StoreEvent(tx *gorm.DB, event *events.Event) (err error) {
 		var newValue string
 		err = ch.OldValueAs(&oldValue)
 		if err != nil {
-			return
+			oldValue = ch.OldValue
 		}
 		err = ch.NewValueAs(&newValue)
 		if err != nil {
-			return
+			newValue = ch.NewValue
 		}
 		change := &gen.ChangelogChange{
 			ID:       uuid.Must(uuid.NewV4()).String(),
