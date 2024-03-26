@@ -45,9 +45,9 @@ voyager:
 	docker run --rm -v `pwd`/gen/schema.graphql:/app/schema.graphql -p 8080:80 graphql/voyager
 
 build-lambda-function-orm:
-	GO111MODULE=on GOOS=linux CGO_ENABLED=0 go build -o main lambda-orm/main.go && zip lambda.zip main && rm main
+	GO111MODULE=on GOOS=linux CGO_ENABLED=0 go build -o bootstrap lambda-orm/main.go && zip lambda.zip bootstrap && rm bootstrap
 build-lambda-function-event-handler:
-	GO111MODULE=on GOOS=linux CGO_ENABLED=0 go build -o main lambda-event-handler/main.go && zip lambda.zip main && rm main
+	GO111MODULE=on GOOS=linux CGO_ENABLED=0 go build -o bootstrap lambda-event-handler/main.go && zip lambda.zip bootstrap && rm bootstrap
 
 test-sqlite:
 	GO111MODULE=on go build -o app *.go && DATABASE_URL=sqlite3://test.db ./app migrate && (DATABASE_URL=sqlite3://test.db PORT=8080 ./app start& export app_pid=$$! && make test-godog || test_result=$$? && kill $$app_pid && exit $$test_result)
